@@ -20,6 +20,9 @@ public class Node{
 	public boolean getEndpoint(){
 		return endpoint;
 	}
+	public int getSize(){
+		return edges.length;
+	}
 	public void setEndpoint(boolean e){
 		endpoint = e;
 	}
