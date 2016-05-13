@@ -55,4 +55,19 @@ public class NodeTree {
 		return key;
 	}
 	
+	/**
+	 * The size of the left and right child node
+	 * @return The size
+	 */
+	public int getSize() {
+		int sizeLeft = 0;
+		int sizeRight = 0;
+		if(left != null)
+			sizeLeft = left.getSize();
+		if(right != null)
+			sizeRight = right.getSize();
+		
+		return 1 + sizeLeft + sizeRight;
+	}
+	
 }

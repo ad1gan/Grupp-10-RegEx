@@ -32,4 +32,53 @@ public class Tree{
 	public Tree(Tree left, String key, Tree right) {
 		root = new NodeTree(left.root, key, right.root);
 	}
+	
+	/**
+	 * 
+	 * @return The given value
+	 */
+	public String getKey() {
+		return root.getKey();
+	}
+	
+	/**
+	 * 
+	 * @return the left subtree
+	 */
+	public Tree getLeft() {
+		Tree temp = new Tree();
+		temp.root = root.getLeft();
+		return temp;
+	}
+	
+	/**
+	 * 
+	 * @return thr right subtree
+	 */
+	public Tree getRight() {
+		Tree temp = new Tree();
+		temp.root = root.getRight();
+		return temp;
+	}
+	
+	/**
+	 * 
+	 * @return the result of an empty tree
+	 */
+	public boolean isEmpty() {
+		return root == null;
+	}
+	
+	/**
+	 * Compute the size of the tree (# Nodes)
+	 * @return the size of the tree
+	 */
+	public int getSize() {
+		if(root == null)
+			return 0;
+		else 
+			return root.getSize();
+	}
+	
+	
 }
