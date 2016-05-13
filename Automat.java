@@ -1,6 +1,7 @@
 public class Automat{
 	private Node[] nodes;
-	static int counter;
+	private static int counter;
+	private Pair start_end;
 
 	private Pair parseTree(Syntaxbaum tree){
 		if(tree.getValue()=='.'){
@@ -65,14 +66,16 @@ public class Automat{
 	}
 
 	public Automat(Syntaxbaum tree){
-		new Automat(tree.size()); //Vorrausgesetzte implementierung size()!
-		//geparse
+		nodes = new Node[tree.size()];
+		for(int i=0;i<tree.size();i++)
+			nodes[i] = new Node(tree.size());
+		start_end = parseTree(tree);
 	}
-
-	public Automat(int size){
-		nodes = new Node[size];
-		for(int i=0;i<size;i++)
-			nodes[i] = new Node(size);
+	public int start(){
+		return start_end.first();
+	}
+	public int end(){
+		return start_end.second();
 	}
 
 	public int getSize(){
