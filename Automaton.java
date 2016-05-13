@@ -87,8 +87,11 @@ public class Automaton{
 	}
 	public void setEdge(int s, int e, char c){
 		nodes[s].setEdge(e,c);
-	}
+	}/*
 	public Node[] getAutomaton(){
 		return this.nodes;
+	}*/
+	public Node getNode(int i)(){
+		return nodes[i];
 	}
 }
