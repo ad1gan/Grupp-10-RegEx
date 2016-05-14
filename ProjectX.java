@@ -1,9 +1,8 @@
 public class ProjectX{
 	public static void main(String[] args) {
 		Tree oak = new Tree(args[0]);
-		oak.cout();
 		Automaton entron = new Automaton(oak);
-		//simulate(args[1], entron);
+		simulate(args[1], entron);
 	}
 
 
@@ -12,10 +11,16 @@ public class ProjectX{
 		Set<Node> active = new Set<Node>();
 		active.addElement(entron.getNode(entron.start()));
 		Set<Node> helper = new Set<Node>();
+		Set<Node> cheapHelp = new Set<Node>();
 		for(int i = 0; i < expression.length(); i++){
 			helper.addElement(entron.getNode(entron.start()));
-			for(int j = 0; j < active.size(); j++)
-				helper.union(cheapConnect(active.getElement(j), entron));
+			
+			while( cheapHelp != helper ){
+				cheapHelp = helper;
+				for(int j = 0; j < active.size(); j++)
+					helper.union(cheapConnect(active.getElement(j), entron));
+			}
+
 			for(int k = 0; k < active.size(); k ++){
 				helper.union( expensiveConnect(active.getElement(k),
 					expression.charAt(i), entron) );
@@ -33,10 +38,7 @@ public class ProjectX{
 		for(int i = 0; i < rooter.getSize(); i++){
 			if(rooter.getEdge(i) == '3')
 				helper.addElement(entron.getNode(i));
-		}
-		for(int j = 1; j < helper.size(); j++)
-			helper.union( cheapConnect(helper.getElement(j), entron) );
-		
+		}		
 		return helper;
 	}
 

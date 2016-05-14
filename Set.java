@@ -32,6 +32,10 @@ public class Set<T>{
 		return this.set.contains(elem);
 	}
 
+	public void clear(){
+		this.set.clear();
+	}
+
 	/** @return set which is of type T[]
 	 */
 	public ArrayList<T> getSet(){
@@ -107,6 +111,13 @@ public class Set<T>{
 		for(int i = 0; i < setU.size(); i++){
 			if ( !(this.set.contains(setU.getElement(i))) )
 				this.set.add(setU.getElement(i));
+		}
+	}
+
+	public void without(Set<T> setW){
+		for(int i = 0; i < setW.size(); i++){
+			if ( this.set.contains(setW.getElement(i)) )
+				this.set.remove(setW.getElement(i));
 		}
 	}
 
