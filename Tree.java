@@ -42,24 +42,6 @@ public class Tree{
 	public char getValue(){
 		return value;
 	}
-	/** Changes the Trees left child
-	 * @param t The new left child
-	 */
-	public void setLeft(Tree t){
-		left = t;
-	}
-	/** Changes the Trees right child
-	 * @param t The new right child
-	 */
-	public void setRight(Tree t){
-		left = t;
-	}
-	/** Changes the Trees nodes char
-	 * @param c The new char
-	 */
-	public void setValue(char c){
-		value = c;
-	}
 	/** Returns the weighted sum of the Nodes necessary for Automaton's parsing
 	 * @return The weighted sum
 	 */
