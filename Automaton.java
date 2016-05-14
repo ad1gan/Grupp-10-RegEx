@@ -3,7 +3,7 @@ public class Automaton{
 	private static int counter;
 	private Pair start_end;
 
-	private Pair parseTree(Syntaxtree tree){
+	private Pair parseTree(Tree tree){
 		if(tree.getValue()=='.'){
 			Pair l = parseTree(tree.getLeft());
 			Pair r = parseTree(tree.getRight());
@@ -64,10 +64,11 @@ public class Automaton{
 			return new Pair(counter-1,counter-1);
 		}
 	}
-	public Automaton(Syntaxtree tree){
-		nodes = new Node[tree.size()];
-		for(int i=0;i<tree.size();i++)
-			nodes[i] = new Node(tree.size());
+	public Automaton(Tree tree){
+		int size = tree.getVerts();
+		nodes = new Node[size];
+		for(int i=0;i<size;i++)
+			nodes[i] = new Node(size);
 		start_end = parseTree(tree);
 	}
 	public int start(){
@@ -91,7 +92,7 @@ public class Automaton{
 	public Node[] getAutomaton(){
 		return this.nodes;
 	}*/
-	public Node getNode(int i)(){
+	public Node getNode(int i){
 		return nodes[i];
 	}
 }
