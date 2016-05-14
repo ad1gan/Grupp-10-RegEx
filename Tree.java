@@ -3,7 +3,12 @@ public class Tree{
 	private Tree left;
 	private Tree right;
 
-
+	public Tree(String p){
+		TreePair a = parseExpression(p,0);
+		value = a.first().value;
+		left  = a.first().left;
+		right = a.first().right;
+	}
 	public Tree(){}
 	public Tree(char c, Tree l, Tree r){
 		value = c;
@@ -40,7 +45,7 @@ public class Tree{
 			res+=this.right.getVerts();
 		return res;
 	}
-	public TreePair parseExpression(String p, int j){
+	private TreePair parseExpression(String p, int j){
 		Tree L = null;
 		while(j<p.length()){
 
