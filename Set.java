@@ -114,11 +114,11 @@ public class Set<T>{
 		}
 	}
 
-	public void without(Set<T> setW){
+	/*public void without(Set<T> setW){
 		for(int i = 0; i < setW.size(); i++){
 			if ( this.set.contains(setW.getElement(i)) )
 				this.set.remove(setW.getElement(i));
 		}
-	}
+	}*/
 
 }
