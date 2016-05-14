@@ -1,15 +1,17 @@
 public class ProjectX{
 	public static void main(String[] args) {
 		Tree oak = new Tree(args[0]);
+		oak.cout();
 		Automaton entron = new Automaton(oak);
-		simulate(args[1], entron);
+		//simulate(args[1], entron);
 	}
 
+
+	//prueft ob expression entron positiv abschliesst
 	public static boolean simulate(String expression, Automaton entron){
 		Set<Node> active = new Set<Node>();
 		active.addElement(entron.getNode(entron.start()));
 		Set<Node> helper = new Set<Node>();
-		helper = active;
 		for(int i = 0; i < expression.length(); i++){
 			helper.addElement(entron.getNode(entron.start()));
 			for(int j = 0; j < active.size(); j++)
@@ -19,6 +21,7 @@ public class ProjectX{
 					expression.charAt(i), entron) );
 			}
 			active = helper;
+			helper.clear();
 		}
 		return ( active.contains(entron.getNode(entron.end())) );
 	}
