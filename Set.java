@@ -16,6 +16,22 @@ public class Set<T>{
 		set.clear();
 	}
 
+	public int size(){
+		return this.set.size();
+	}
+
+	public T getElement(int i){
+		if (i < this.size())
+			return this.set.get(i);
+		T failure = null;
+
+		return failure;
+	}
+
+	public boolean contains(T elem){
+		return this.set.contains(elem);
+	}
+
 	/** @return set which is of type T[]
 	 */
 	public ArrayList<T> getSet(){
@@ -56,7 +72,7 @@ public class Set<T>{
 	 *   @param setA is of type Set<T>
 	 *   @param setB is of type Set<T>
 	 */
-	public void intersect(Set<T> setA, Set<T> setB){
+	public void intersect2(Set<T> setA, Set<T> setB){
 		this.set.clear();
 		for(int i = 0; i < setA.set.size(); i++){
 			if (setB.set.contains(setA.set.get(i))){
@@ -65,20 +81,33 @@ public class Set<T>{
 		}
 	}
 
+	public void intersect(Set<T> setI){
+		for(int i = 0; i < this.size(); i++){
+			if ( !(setI.set.contains(this.getElement(i))) )
+				this.set.remove(this.getElement(i));
+		}
+	}
+
 	/** Sets the set p on which it is called onto the union of setA and setB
 	 *   Attention: p will be cleared before getting set onto the union!
 	 *   @param setA is of type Set<T>
 	 *   @param setB is of type Set<T>
 	 */
-	public void union(Set<T> setA, Set<T> setB){
+	public void union2(Set<T> setA, Set<T> setB){
 		this.set.clear();
 		this.set.addAll(setA.set);
 		this.set.addAll(setB.set);
 		
 		Set<T> helper = new Set<T>();
-		helper.intersect(setA, setB);
+		helper.intersect2(setA, setB);
 		this.set.removeAll(helper.set);
 	}
 
+	public void union(Set<T> setU){
+		for(int i = 0; i < setU.size(); i++){
+			if ( !(this.set.contains(setU.getElement(i))) )
+				this.set.add(setU.getElement(i));
+		}
+	}
 
 }
