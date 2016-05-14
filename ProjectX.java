@@ -1,10 +1,11 @@
 public class ProjectX{
 	public static void main(String[] args) {
-		
+		Tree oak = new Tree(args[0]);
+		Automaton entron = new Automaton(oak);
+		simulate(args[1], entron);
 	}
 
-
-	public boolean simulate(String expression, Automaton entron){
+	public static boolean simulate(String expression, Automaton entron){
 		Set<Node> active = new Set<Node>();
 		active.addElement(entron.getNode(entron.start()));
 		Set<Node> helper = new Set<Node>();
@@ -22,10 +23,8 @@ public class ProjectX{
 		return ( active.contains(entron.getNode(entron.end())) );
 	}
 
-
-
 	//gibt Netz der mit epsilon verbundenen Knoten zurueck
-	public Set<Node> cheapConnect(Node rooter, Automaton entron){
+	public static Set<Node> cheapConnect(Node rooter, Automaton entron){
 		Set<Node> helper = new Set<Node>();
 		helper.addElement(rooter);
 		for(int i = 0; i < rooter.getSize(); i++){
@@ -38,7 +37,7 @@ public class ProjectX{
 		return helper;
 	}
 
-	public Set<Node> expensiveConnect(Node rooter, char c, Automaton entron){
+	public static Set<Node> expensiveConnect(Node rooter, char c, Automaton entron){
 		Set<Node> helper = new Set<Node>();
 		for(int i = 0; i < rooter.getSize(); i++){
 			if(rooter.getEdge(i) == c)
