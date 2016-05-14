@@ -1,5 +1,6 @@
 public class Node{
 	private char[] edges;
+	private boolean endpoint=false;
 
 	public Node(int size){
 		edges = new char[size];
@@ -14,10 +15,15 @@ public class Node{
 		return edges[i];
 	}
 	public char[] getEdges(){
-		char[] res = new char[edges.length];
-		for(int i=0;i<edges.length;i++){
-			res[i] = edges[i];
-		}
-		return res;
+		return edges;
+	}
+	public boolean getEndpoint(){
+		return endpoint;
+	}
+	public int getSize(){
+		return edges.length;
+	}
+	public void setEndpoint(boolean e){
+		endpoint = e;
 	}
 }
