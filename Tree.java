@@ -48,7 +48,6 @@ public class Tree{
 	private TreePair parseExpression(String p, int j){
 		Tree L = null;
 		while(j<p.length()){
-
 			if(p.charAt(j)=='('){
 				TreePair a = parseExpression(p,j+1);
 				j = a.second();
@@ -78,7 +77,6 @@ public class Tree{
 				else
 					L = R;
 			}
-
 		}
 	return new TreePair(L,j);
 	}
