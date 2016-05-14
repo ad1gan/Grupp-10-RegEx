@@ -34,7 +34,7 @@ public class Automaton{
 			if(r.first()!=r.second())
 				nodes[counter].setEdge(r.first(),'3');
 			else
-				nodes[counter].setEdge(l.first(),tree.getRight().getValue());
+				nodes[counter].setEdge(r.first(),tree.getRight().getValue());
 			//Legt Edges zu letzer Node an
 			nodes[l.second()].setEdge(counter+1,'3');
 			nodes[r.second()].setEdge(counter+1,'3');
@@ -94,5 +94,15 @@ public class Automaton{
 	}*/
 	public Node getNode(int i){
 		return nodes[i];
+	}
+	public void printout(){
+		for(int i=0;i<nodes.length;i++){
+			System.out.print(i);
+			for(int j=0;j<nodes.length;j++){
+				System.out.print("\t");
+				System.out.print(nodes[i].getEdge(j));
+			}
+			System.out.println("");
+		}
 	}
 }
