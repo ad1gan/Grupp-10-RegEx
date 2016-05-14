@@ -45,12 +45,9 @@ public class Set<T>{
 	 * @param elem The element that get's added to the set (or not)
 	 * @return Boolean if the element could be added successfully
 	 */
-	public boolean addElement(T elem){
-		if (!(set.contains(elem))){
-			set.add(elem);
-			return set.add(elem);
-		}
-		return false;
+	public void addElement(T elem){
+		if (!(this.set.contains(elem)))
+			this.set.add(elem);
 	}
 
 	/** Proofs the set condition (no element twice)
@@ -87,7 +84,7 @@ public class Set<T>{
 
 	public void intersect(Set<T> setI){
 		for(int i = 0; i < this.size(); i++){
-			if ( !(setI.set.contains(this.getElement(i))) )
+			if ( !(setI.contains(this.getElement(i))) )
 				this.set.remove(this.getElement(i));
 		}
 	}
