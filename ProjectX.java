@@ -35,6 +35,8 @@ public class ProjectX{
 					return newRes;
 				} else if(helper.getMatchedString()==testText)
 					return helper;
+				else
+					continue;
 			} else
 				helper.setMatchedString(helper.getMatchedString() + testText.charAt(i));
 
