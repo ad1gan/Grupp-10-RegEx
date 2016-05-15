@@ -2,21 +2,8 @@ public class ProjectX{
 	public static void main(String[] args) {
 		Tree oak = new Tree(args[0]);
 		Automaton entron = new Automaton(oak);
-		Pair<Integer, String> bag = new Pair<Integer, String>(1, "");
-		Pair<Boolean, Pair<Integer, String>> douche =
-			new Pair<Boolean, Pair<Integer, String>>(false, bag);
-		
-		douche = simulate(args[1], entron);
-
-		System.out.println(douche.first());
-		System.out.println(douche.second().first());
-		System.out.println(douche.second().second());
-
-		System.out.println();
-
-		System.out.println(simulate(args[1], entron).first());
-		System.out.println(simulate(args[1], entron).second().first());
-		System.out.println(simulate(args[1], entron).second().second());
+		RegexMatchResult douche = simulate(args[1], entron);
+		douche.print();
 	}
 
 	/** Tests if a given string testText matches on an Automaton or actually
@@ -25,10 +12,9 @@ public class ProjectX{
 	 *   @param entron the Automaton that represents the given regular expression
 	 *   @return true if testText matches with entron otherwise false
 	 */
-	public static Pair<Boolean, Pair<Integer, String>> simulate(String testText, Automaton entron){
+	public static RegexMatchResult simulate(String testText, Automaton entron){
 		Set<Integer> actives = new Set<Integer>();
-		Set<Integer> comparison = new Set<Integer>();
-		Pair<Integer, String> helper = new Pair<Integer, String>(1, "");
+		RegexMatchResult helper = new RegexMatchResult(1, "");
 		actives.addElement(entron.start());
 		
 		for(int i = 0; i < testText.length(); i++){
@@ -42,25 +28,20 @@ public class ProjectX{
 					if ( entron.getEdge(actives.getElement(j),k) == testText.charAt(i) )
 						actives2.addElement(k);
 
-			if ( actives2 == comparison ){		//If there couldn't be added any new nodes to
-				helper.setSecond("");			//actives2 the latest part of testText was not
-				helper.setFirst(i+1);						//part of match for entron
-			}else{
-				helper.setSecond(helper.second() + testText.charAt(i));
-			}
+			if(actives2.size()==0){						//If there couldn't be added any new nodes to
+				helper.setMatchedString("");			//actives2 the latest part of testText was not
+				helper.setStartingPosition(i+1);		//part of match for entron
+			} else
+				helper.setMatchedString(helper.getMatchedString() + testText.charAt(i));
 
 			actives = actives2;
 		}
 		for(int j = 0; j < actives.size(); j++)
 			actives.union(cheapConnect(actives.getElement(j),entron));
 
-		if(actives.contains(entron.end())){
-			return new Pair<Boolean, Pair<Integer, String>>(true, helper);
-		}
-		else{		
-			helper.setFirst(2147483647); helper.setSecond("{}");
-			return new Pair<Boolean, Pair<Integer, String>>(false, helper);
-		}
+		if(!actives.contains(entron.end()))
+			helper.setStartingPosition(-1);
+		return helper;
 	}
 
 	/** Finds the subgraph of nodes that is ocnnected to node numb only via "3"-connections
