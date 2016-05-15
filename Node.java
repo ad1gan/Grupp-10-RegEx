@@ -26,12 +26,6 @@ public class Node{
 	public char getEdge(int i){
 		return edges[i];
 	}
-	/** Returns the array of all edges starting at this Node. '3' stats for eps, '0' for no connection
-	 * @return The array with the edges
-	 */
-	public char[] getEdges(){
-		return edges;
-	}
 	/** Returns the size of the Automaton this Node is in.
 	 * @return The size of the Automaton
 	 */

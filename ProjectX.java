@@ -32,7 +32,6 @@ public class ProjectX{
 				if(simulate(helper.getMatchedString(),entron).getStartingPosition()!=-1) //Müll am Ende
 					return helper;
 				else if (helper.getMatchedString()==""){
-					System.out.println("hier");
 					helper.setMatchedString("");
 					helper.setStartingPosition(i+1);
 					continue;
@@ -61,7 +60,7 @@ public class ProjectX{
 	*/
 	public static Set<Integer> cheapConnect(int numb, Automaton entron){
 		Set<Integer> helper = new Set<Integer>();
-		for(int i = 0; i < entron.getNode(numb).getEdges().length; i++){
+		for(int i = 0; i < entron.getSize(); i++){
 			if (entron.getNode(numb).getEdge(i)=='3')
 				helper.addElement(i);
 		}
