@@ -47,7 +47,7 @@ public class Tree{
 	 */
 	public int getVerts(){
 		int res;
-		if(value=='|' || value=='*' || value=='+')
+		if(value=='|' || value=='*' || value=='+' || value=='?')
 			res = 2;
 		else
 			res = 1;
@@ -78,6 +78,9 @@ public class Tree{
 			} else if(p.charAt(j)=='+'){
 				j++;
 				L = new Tree('+',L,null);
+			} else if(p.charAt(j)=='?'){
+				j++;
+				L = new Tree('?',L,null);
 			} else if(p.charAt(j)==')'){
 				return new Pair<Tree,Integer>(L,j);
 			} else{

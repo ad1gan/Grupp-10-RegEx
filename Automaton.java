@@ -46,7 +46,6 @@ public class Automaton{
 			return new Pair<Integer,Integer>(counter-2, counter-1);
 		} else if(tree.getValue()=='*'){
 			Pair<Integer,Integer> l = parseTree(tree.getLeft());
-
 			nodes[counter]   = new Node(nodes.length);
 			nodes[counter+1] = new Node(nodes.length);
 
@@ -63,7 +62,6 @@ public class Automaton{
 			return new Pair<Integer,Integer>(counter-2, counter-1);
 		} else if(tree.getValue()=='+'){
 			Pair<Integer,Integer> l = parseTree(tree.getLeft());
-
 			nodes[counter]   = new Node(nodes.length);
 			nodes[counter+1] = new Node(nodes.length);
 
@@ -77,6 +75,20 @@ public class Automaton{
 
 			counter+=2;
 			return new Pair<Integer,Integer>(counter-2, counter-1);
+		} else if(tree.getValue()=='?'){
+			Pair<Integer,Integer> l = parseTree(tree.getLeft());
+			nodes[counter]   = new Node(nodes.length);
+			nodes[counter+1] = new Node(nodes.length);
+
+			nodes[counter].setEdge(counter+1,'3');
+			if(l.first()!=l.second())
+				nodes[counter].setEdge(l.first(),'3');
+			else
+				nodes[counter].setEdge(l.first(),tree.getLeft().getValue());
+			nodes[l.second()].setEdge(counter+1,'3');
+
+			counter+=2;
+			return new Pair<Integer,Integer>(counter-2,counter-1);
 		} else{
 			nodes[counter] = new Node(nodes.length);
 			counter++;
