@@ -2,7 +2,6 @@ public class ProjectX{
 	public static void main(String[] args) {
 		Tree oak = new Tree(args[0]);
 		Automaton entron = new Automaton(oak);
-		System.out.println(entron.start());
 		System.out.println(simulate(args[1], entron));
 	}
 	public static boolean simulate(String expression, Automaton entron){
