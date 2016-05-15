@@ -2,48 +2,37 @@ public class ProjectX{
 	public static void main(String[] args) {
 		Tree oak = new Tree(args[0]);
 		Automaton entron = new Automaton(oak);
-		entron.printout();
+		System.out.println(simulate(args[1], entron));
 	}
-
 	public static boolean simulate(String expression, Automaton entron){
-		Set<Node> active = new Set<Node>();
-		active.addElement(entron.getNode(entron.start()));
-		Set<Node> helper = new Set<Node>();
-		helper = active;
-		for(int i = 0; i < expression.length(); i++){
-			helper.addElement(entron.getNode(entron.start()));
-			for(int j = 0; j < active.size(); j++)
-				helper.union(cheapConnect(active.getElement(j), entron));
-			for(int k = 0; k < active.size(); k ++){
-				helper.union( expensiveConnect(active.getElement(k),
-					expression.charAt(i), entron) );
-			}
-			active = helper;
+		Set<Integer> actives = new Set<Integer>();
+		actives.addElement(entron.start());
+		for(int i=0;i<expression.length();i++){
+			for(int j=0;j<actives.size();j++)
+				actives.union(cheapConnect(actives.getElement(j),entron));
+
+			Set<Integer> actives2 = new Set<Integer>();
+			for(int j=0;j<actives.size();j++)
+				for(int k=0;k<entron.getSize();k++)
+					if(entron.getEdge(actives.getElement(j),k)==expression.charAt(i))
+						actives2.addElement(k);
+
+			actives = actives2;
 		}
-		return ( active.contains(entron.getNode(entron.end())) );
+		for(int j=0;j<actives.size();j++)
+			actives.union(cheapConnect(actives.getElement(j),entron));
+
+		if(actives.contains(entron.end()))
+			return true;
+		return false;
 	}
 
-	//gibt Netz der mit epsilon verbundenen Knoten zurueck
-	public static Set<Node> cheapConnect(Node rooter, Automaton entron){
-		Set<Node> helper = new Set<Node>();
-		helper.addElement(rooter);
-		for(int i = 0; i < rooter.getSize(); i++){
-			if(rooter.getEdge(i) == '3')
-				helper.addElement(entron.getNode(i));
-		}
-		for(int j = 1; j < helper.size(); j++)
-			helper.union( cheapConnect(helper.getElement(j), entron) );
-		
-		return helper;
-	}
-
-	public static Set<Node> expensiveConnect(Node rooter, char c, Automaton entron){
-		Set<Node> helper = new Set<Node>();
-		for(int i = 0; i < rooter.getSize(); i++){
-			if(rooter.getEdge(i) == c)
-				helper.addElement(entron.getNode(i));
+	public static Set<Integer> cheapConnect(int numb, Automaton entron){
+		Set<Integer> helper = new Set<Integer>();
+		for(int i = 0; i < entron.getNode(numb).getEdges().length; i++){
+			if (entron.getNode(numb).getEdge(i)=='3')
+				helper.addElement(i);
 		}
 		return helper;
 	}
-
 }
