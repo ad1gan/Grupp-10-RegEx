@@ -29,14 +29,18 @@ public class ProjectX{
 						actives2.addElement(k);
 
 			if(actives2.size()==0){
-				if (helper.getMatchedString()==""){
-					RegexMatchResult newRes = simulate(testText.substring(i+1),entron);
-					newRes.setStartingPosition(newRes.getStartingPosition()+1);
-					return newRes;
-				} else if(helper.getMatchedString()==testText)
+				if(simulate(helper.getMatchedString(),entron).getStartingPosition()!=-1) //Müll am Ende
 					return helper;
-				else
+				else if (helper.getMatchedString()==""){
+					System.out.println("hier");
+					helper.setMatchedString("");
+					helper.setStartingPosition(i+1);
 					continue;
+				} else{
+					RegexMatchResult res = simulate(testText.substring(i),entron);
+					res.setStartingPosition(res.getStartingPosition()+i);
+					return res;
+				}
 			} else
 				helper.setMatchedString(helper.getMatchedString() + testText.charAt(i));
 
