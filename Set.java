@@ -50,24 +50,6 @@ public class Set<T>{
 			this.set.add(elem);
 	}
 
-	/** Proofs the set condition (no element twice)
-	 * @return true or false
-	 */
-	/*private boolean isSet(){			//evtl NullPointerHurensohn checken!
-		
-		if (set.isEmpty())
-			return true;
-		
-		for (int i = 0; i < set.size(); i++){
-			for (int j = i+1; j < set.size(); j++){
-				if (this.set[i] == this.set[j])
-					return false
-			}
-		}
-
-		return true;
-	}*/
-
 	/** Sets the set p on which it is called onto the intersection of setA and setB
 	 *   Attention: p will be cleared before getting set onto the intersection!
 	 *   @param setA is of type Set<T>
@@ -110,12 +92,4 @@ public class Set<T>{
 				this.set.add(setU.getElement(i));
 		}
 	}
-
-	/*public void without(Set<T> setW){
-		for(int i = 0; i < setW.size(); i++){
-			if ( this.set.contains(setW.getElement(i)) )
-				this.set.remove(setW.getElement(i));
-		}
-	}*/
-
 }
