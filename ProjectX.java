@@ -2,92 +2,72 @@ public class ProjectX{
 	public static void main(String[] args) {
 		Tree oak = new Tree(args[0]);
 		Automaton entron = new Automaton(oak);
-		//System.out.println(simulate(args[1], entron));
-		Set<Integer> cheaper = new Set<Integer>();
-		cheaper = expensiveConnect(1, 'A', entron);
-		//Set<Integer> active = new Set<Integer>();
-		System.out.println(simulate(args[1], entron));
-		//for(int i = 0; i < active.size(); i++)
-		//	System.out.print("" + active.getElement(i) + " ");		
-		//Settester();
-	}
+		Pair<Integer, String> bag = new Pair<Integer, String>(1, "");
+		Pair<Boolean, Pair<Integer, String>> douche =
+			new Pair<Boolean, Pair<Integer, String>>(false, bag);
+		
+		douche = simulate(args[1], entron);
 
-	public static void Settester(){
-		Set<Integer> A = new Set<Integer>();
-		A.addElement(1); A.addElement(3); A.addElement(4); A.addElement(4);
-		Set<Integer> B = new Set<Integer>();
-		B.addElement(2); B.addElement(3);
-		Set<Integer> C = new Set<Integer>();
-		C.addElement(4);
-		C.intersect(A);
-		B.union(A);
-		for(int i = 0; i < A.size(); i++)
-			System.out.print("" + A.getElement(i) + " ");
+		System.out.println(douche.first());
+		System.out.println(douche.second().first());
+		System.out.println(douche.second().second());
+
 		System.out.println();
-		for(int i = 0; i < B.size(); i++)
-			System.out.print("" + B.getElement(i) + " ");
-		System.out.println();
-		for(int i = 0; i < C.size(); i++)
-			System.out.print("" + C.getElement(i) + " ");
+
+		System.out.println(simulate(args[1], entron).first());
+		System.out.println(simulate(args[1], entron).second().first());
+		System.out.println(simulate(args[1], entron).second().second());
 	}
 
-
-	public static boolean simulate(String expression, Automaton entron){
-		Set<Integer> active = new Set<Integer>();
-		Set<Integer> helper = new Set<Integer>();
-		active.addElement(entron.start());
-		for(int i = 0; i < expression.length(); i++){
-			active.clear();
-			active.addElement(entron.start());
-			do{
-				helper = active;
-				for(int j = 0; j < helper.size(); j++)
-					active.union( cheapConnect(helper.getElement(j), entron) );
-			}while(active != helper);
-
-			for(int k = 0; k < active.size(); k++)
-				active.union( expensiveConnect(k, expression.charAt(i), entron) );
-
-			do{
-				helper = active;
-				for(int j = 0; j < helper.size(); j++)
-					active.union( cheapConnect(helper.getElement(j), entron) );
-			}while(active != helper);
-
-			System.out.println();
-			for(int l = 0; l < active.size(); l++)
-				System.out.print("" + active.getElement(l) + " ");
-		}
-		return( active.contains(entron.end()) );
-	}
-
-	//prueft ob expression entron positiv abschliesst
-	/*public static boolean simulate(String expression, Automaton entron){
-		Set<Node> active = new Set<Node>();
-		active.addElement(entron.getNode(entron.start()));
-		Set<Node> helper = new Set<Node>();
-		Set<Node> cheapHelp = new Set<Node>();
-		for(int i = 0; i < expression.length(); i++){
-			while( cheapHelp != helper ){
-				System.out.println("Starte while");
-				helper.addElement(entron.getNode(entron.start()));
-				cheapHelp = helper;
-				for(int j = 0; j < active.size(); j++)
-					helper.union(cheapConnect(j, entron));
-			}
-
-			for(int k = 0; k < active.size(); k++){
-				System.out.println("Starte for");
-				helper.union( expensiveConnect(k, expression.charAt(i), entron) );
-			}
-			active = helper;
-			helper.clear();
+	/** Tests if a given string testText matches on an Automaton or actually
+	 *   if it matches a regular expression returns true if it's a yes
+	 *   @param testText the String which is tested
+	 *   @param entron the Automaton that represents the given regular expression
+	 *   @return true if testText matches with entron otherwise false
+	 */
+	public static Pair<Boolean, Pair<Integer, String>> simulate(String testText, Automaton entron){
+		Set<Integer> actives = new Set<Integer>();
+		Set<Integer> comparison = new Set<Integer>();
+		Pair<Integer, String> helper = new Pair<Integer, String>(1, "");
+		actives.addElement(entron.start());
+		
+		for(int i = 0; i < testText.length(); i++){
+			for(int j = 0; j < actives.size(); j++)
+				actives.union(cheapConnect(actives.getElement(j),entron));
 			
-			System.out.println();
-		}
-		return ( active.contains(entron.getNode(entron.end())) );
-	}*/
+			Set<Integer> actives2 = new Set<Integer>();
+			
+			for(int j = 0; j < actives.size(); j++)
+				for(int k = 0; k < entron.getSize(); k++)
+					if ( entron.getEdge(actives.getElement(j),k) == testText.charAt(i) )
+						actives2.addElement(k);
 
+			if ( actives2 == comparison ){		//If there couldn't be added any new nodes to
+				helper.setSecond("");			//actives2 the latest part of testText was not
+				helper.setFirst(i+1);						//part of match for entron
+			}else{
+				helper.setSecond(helper.second() + testText.charAt(i));
+			}
+
+			actives = actives2;
+		}
+		for(int j = 0; j < actives.size(); j++)
+			actives.union(cheapConnect(actives.getElement(j),entron));
+
+		if(actives.contains(entron.end())){
+			return new Pair<Boolean, Pair<Integer, String>>(true, helper);
+		}
+		else{		
+			helper.setFirst(2147483647); helper.setSecond("{}");
+			return new Pair<Boolean, Pair<Integer, String>>(false, helper);
+		}
+	}
+
+	/** Finds the subgraph of nodes that is ocnnected to node numb only via "3"-connections
+	*   @param numb the index in the Automaton-graph entron
+	*	@entron the Automaton the subgraph is searched in
+	*	@return Set<Integer> which holds the indices of the nodes
+	*/
 	public static Set<Integer> cheapConnect(int numb, Automaton entron){
 		Set<Integer> helper = new Set<Integer>();
 		for(int i = 0; i < entron.getNode(numb).getEdges().length; i++){
@@ -96,38 +76,4 @@ public class ProjectX{
 		}
 		return helper;
 	}
-
-	//gibt Netz der mit epsilon verbundenen Knoten zurueck
-	/*public static Set<Node> cheapConnect(int numb, Automaton entron){
-		Set<Node> helper = new Set<Node>();
-		for(int i = 0; i < entron.getNode(numb).getEdges().length; i++){
-			if (entron.getNode(numb).getEdge(i)=='3'){
-				helper.addElement(entron.getNode(i));
-				System.out.print(" " + i + " ");
-			}
-		}
-		helper.addElement(entron.getNode(numb));
-		return helper;
-	}*/
-
-	public static Set<Integer> expensiveConnect(int numb, char c, Automaton entron){
-		Set<Integer> helper = new Set<Integer>();
-		for(int i = 0; i < entron.getNode(numb).getEdges().length; i++){
-			if(entron.getNode(numb).getEdge(i) == c)
-				helper.addElement(i);
-		}
-		return helper;
-	}
-
-	/*public static Set<Node> expensiveConnect(int numb, char c, Automaton entron){
-		Set<Node> helper = new Set<Node>();
-		for(int i = 0; i < entron.getNode(numb).getEdges().length; i++){
-			if(entron.getNode(numb).getEdge(i) == c){
-				helper.addElement(entron.getNode(i));
-				System.out.print(" " + i + " ");
-			}
-		}
-		return helper;
-	}*/
-
 }
