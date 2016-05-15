@@ -29,9 +29,12 @@ public class ProjectX{
 						actives2.addElement(k);
 
 			if(actives2.size()==0){
-				RegexMatchResult newRes = simulate(testText.substring(i+1),entron);
-				newRes.setStartingPosition(newRes.getStartingPosition()+1);
-				return newRes;
+				if (helper.getMatchedString()==""){
+					RegexMatchResult newRes = simulate(testText.substring(i+1),entron);
+					newRes.setStartingPosition(newRes.getStartingPosition()+1);
+					return newRes;
+				} else if(helper.getMatchedString()==testText)
+					return helper;
 			} else
 				helper.setMatchedString(helper.getMatchedString() + testText.charAt(i));
 
