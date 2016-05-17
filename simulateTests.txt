@@ -1,0 +1,66 @@
+Program-Checks && Results
+
+java ProjectX "A((AG|AA)*)" "AAABAAG"
+	Matching position: 1
+	Matched substring: AAA 						true
+
+java ProjectX "AE((AG|AA)*))" "----AEAGAAA---"
+	Matching position: 4
+	Matched substring: AEAGAAA 					false (AEAGAA)
+
+java ProjectX "AE((AG|AA)*))" "----AEAGAAAE---"
+	Matching position: 4
+	Matched substring: AEAGAAA 					false (AEAGAA)
+
+java ProjectX "AE((AG|AA)*))" "----AEAGAABAE---"
+	Matching position: 4
+	Matched substring: AEAGAA 					true
+
+java ProjectX "AE((AG|AA)*))" "----AEAGAAGAE---"
+	Matching position: 4
+	Matched substring: AEAGAA 					true
+
+java ProjectX "AE((AG|AA)*))" "----AEAGAAAAE---"
+	Matching position: 4
+	Matched substring: AEAGAAAA 				true
+
+java ProjectX "AE((AG|AA)*))" "----AEAGAAABAE---"
+	Matching position: 4
+	Matched substring: AEAGAAA 					false (AEAGAA)
+
+java ProjectX "AE((AG|AA)*))" "----AEAGAAAAAE---"
+	Matching position: 4
+	Matched substring: AEAGAAAAA 				false (AEAGAAAA)
+
+java ProjectX "AE((AG|AB)*))" "----AEAGABAAAAE---"
+	Matching position: 4
+	Matched substring: AEAGABA 					false (AEAGAB)
+
+java ProjectX "AE((AG|AB)*))" "----AEAGABCAAAE---"
+	Matching position: 4
+	Matched substring: AEAGAB 					true
+
+java ProjectX "AE((AG|AB)*))" "----AEAGABACAAE---"
+	Matching position: 4
+	Matched substring: AEAGABA 					false (AEAGAB)
+
+java ProjectX "AE((AG|AB)*))" "----AEAGABABAAE---"
+	Matching position: 4
+	Matched substring: AEAGABABA 				false (AEAGABAB)
+
+java ProjectX "AE((AG|AB)*))" "----AEAGABAEAAE---"
+	Matching position: 4
+	Matched substring: AEAGABA 					false (AEAGAB)
+
+java ProjectX "AE((AG|AB)*))" "----AEAGABEAAAE---"
+	Matching position: 4
+	Matched substring: AEAGAB 					true
+
+java ProjectX "AE((AG|AB)*))E" "----AEAGABEAAAE---"
+	Matching position: 4
+	Matched substring: AEAGAB 					false (AEAGABE)
+
+java ProjectX "AE((AG|AB)*))EA" "----AEAGABEAAAE---"
+	Matching position: 4
+	Matched substring: AEAGAB 					false (AEAGABEA)
+
