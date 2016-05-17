@@ -29,21 +29,19 @@ public class ProjectX{
 						actives2.addElement(k);
 
 			if(actives2.size()==0){
-				if(simulate(helper.getMatchedString(),entron).getStartingPosition()!=-1) //Müll am Ende
-					return helper;
-				else if (helper.getMatchedString()==""){
-					helper.setMatchedString("");
+				if(helper.getMatchedString()=="") //Nothing valid until now
 					helper.setStartingPosition(i+1);
-					continue;
-				} else{
+				else if(simulate(helper.getMatchedString(),entron).getStartingPosition()!=-1) //Already found a fitting string of maximum length. return
+					return helper;
+				else{ //Found the start of a fitting string, but ends too soon. Cut it. - why do I need this?
 					RegexMatchResult res = simulate(testText.substring(i),entron);
 					res.setStartingPosition(res.getStartingPosition()+i);
 					return res;
 				}
-			} else
+			} else{
 				helper.setMatchedString(helper.getMatchedString() + testText.charAt(i));
-
-			actives = actives2;
+				actives = actives2;
+			}
 		}
 		for(int j = 0; j < actives.size(); j++)
 			actives.union(cheapConnect(actives.getElement(j),entron));
