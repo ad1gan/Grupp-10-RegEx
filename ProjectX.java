@@ -31,13 +31,6 @@ public class ProjectX{
 			if(actives2.size()==0){
 				if(helper.getMatchedString()=="") //Nothing valid until now
 					helper.setStartingPosition(i+1);
-				else if(simulate(helper.getMatchedString(),entron).getStartingPosition()!=-1) //Already found a fitting string of maximum length. return
-					return helper;
-				else{ //Found the start of a fitting string, but ends too soon. Cut it. - why do I need this?
-					RegexMatchResult res = simulate(testText.substring(i),entron);
-					res.setStartingPosition(res.getStartingPosition()+i);
-					return res;
-				}
 			} else{
 				helper.setMatchedString(helper.getMatchedString() + testText.charAt(i));
 				actives = actives2;
