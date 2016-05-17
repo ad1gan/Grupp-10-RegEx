@@ -13,8 +13,10 @@ public class ProjectX{
 	 *   @return true if testText matches with entron otherwise false
 	 */
 	public static RegexMatchResult simulate(String testText, Automaton entron){
+		if(testText.length()==0){}
 		Set<Integer> actives = new Set<Integer>();
 		RegexMatchResult helper = new RegexMatchResult(1, "");
+		boolean PeterPan = false;
 		actives.addElement(entron.start());
 		
 		for(int i = 0; i < testText.length(); i++){
@@ -22,19 +24,30 @@ public class ProjectX{
 				actives.union(cheapConnect(actives.getElement(j),entron));
 			
 			Set<Integer> actives2 = new Set<Integer>();
-			
+			if(actives.contains(entron.end()))
+				PeterPan = true;
+
 			for(int j = 0; j < actives.size(); j++)
 				for(int k = 0; k < entron.getSize(); k++)
 					if ( entron.getEdge(actives.getElement(j),k) == testText.charAt(i) )
 						actives2.addElement(k);
 
-			if(actives2.size()==0){						//If there couldn't be added any new nodes to
-				helper.setMatchedString("");			//actives2 the latest part of testText was not
-				helper.setStartingPosition(i+1);		//part of match for entron
-			} else
+			if(actives2.size()==0){
+				if(helper.getMatchedString()=="") //Nothing valid until now
+					helper.setStartingPosition(i+1);
+				else if(simulate(helper.getMatchedString(),entron).getStartingPosition()!=-1) //Already found a fitting string of maximum length. return
+					return helper;
+				else if (PeterPan)
+					return helper;
+				else{ //Found the start of a fitting string, but ends too soon. Cut it. - why do I need this?
+					RegexMatchResult res = simulate(testText.substring(i),entron);
+					res.setStartingPosition(res.getStartingPosition()+i);
+					return res;
+				}
+			} else{
 				helper.setMatchedString(helper.getMatchedString() + testText.charAt(i));
-
-			actives = actives2;
+				actives = actives2;
+			}
 		}
 		for(int j = 0; j < actives.size(); j++)
 			actives.union(cheapConnect(actives.getElement(j),entron));
@@ -51,7 +64,7 @@ public class ProjectX{
 	*/
 	public static Set<Integer> cheapConnect(int numb, Automaton entron){
 		Set<Integer> helper = new Set<Integer>();
-		for(int i = 0; i < entron.getNode(numb).getEdges().length; i++){
+		for(int i = 0; i < entron.getSize(); i++){
 			if (entron.getNode(numb).getEdge(i)=='3')
 				helper.addElement(i);
 		}
