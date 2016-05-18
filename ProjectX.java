@@ -16,6 +16,8 @@ public class ProjectX{
 		if(testText.length()==0){}
 		Set<Integer> actives = new Set<Integer>();
 		RegexMatchResult helper = new RegexMatchResult(1, "");
+		RegexMatchResult valid = new RegexMatchResult(-1,"");
+		boolean PeterPan = false;
 		actives.addElement(entron.start());
 		
 		for(int i = 0; i < testText.length(); i++){
@@ -23,21 +25,25 @@ public class ProjectX{
 				actives.union(cheapConnect(actives.getElement(j),entron));
 			
 			Set<Integer> actives2 = new Set<Integer>();
-			
+
 			for(int j = 0; j < actives.size(); j++)
 				for(int k = 0; k < entron.getSize(); k++)
 					if ( entron.getEdge(actives.getElement(j),k) == testText.charAt(i) )
 						actives2.addElement(k);
 
+			if(simulate(helper.getMatchedString(),entron).getStartingPosition()!=-1){
+				valid = simulate(helper.getMatchedString(),entron);
+				valid.setStartingPosition(i-valid.getMatchedString().length());
+			}
+
 			if(actives2.size()==0){
-				if(helper.getMatchedString()=="") //Nothing valid until now
+				if(helper.getMatchedString()==""){
+					System.out.println("Fall 1 bei " + i);
 					helper.setStartingPosition(i+1);
-				else if(simulate(helper.getMatchedString(),entron).getStartingPosition()!=-1) //Already found a fitting string of maximum length. return
-					return helper;
-				else{ //Found the start of a fitting string, but ends too soon. Cut it. - why do I need this?
-					RegexMatchResult res = simulate(testText.substring(i),entron);
-					res.setStartingPosition(res.getStartingPosition()+i);
-					return res;
+				}
+				else if(simulate(helper.getMatchedString(),entron).getStartingPosition()==-1 && valid.getStartingPosition()!=-1){ //Already found a fitting string of maximum length. return
+					System.out.println("Fall 2 bei " + i);
+					return valid;
 				}
 			} else{
 				helper.setMatchedString(helper.getMatchedString() + testText.charAt(i));
