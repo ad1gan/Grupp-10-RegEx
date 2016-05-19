@@ -17,9 +17,9 @@ public class ProjectX{
 		Set<Integer> actives2  = new Set<Integer>();
 		RegexMatchResult curr  = new RegexMatchResult(1, "");
 		RegexMatchResult valid = new RegexMatchResult(-1,"");
+		actives.addElement(entron.start());
 		
 		for(int i = 0; i < testText.length(); i++){
-			actives.addElement(entron.start());
 			freeSteps(actives,entron);
 			
 			if(actives.contains(entron.end())){ //We already found a valid string, just need to see if it's of maximum length
@@ -27,6 +27,7 @@ public class ProjectX{
 				valid.setMatchedString(curr.getMatchedString());
 			}
 
+			actives2 = new Set<Integer>(); //Why doesn't clear work here?
 			for(int j=0; j<actives.size(); j++) //"expensive" connect
 				for(int k=0; k<entron.getSize(); k++)
 					if( entron.getEdge(actives.getElement(j),k)==testText.charAt(i) ) 
@@ -39,10 +40,10 @@ public class ProjectX{
 					curr.setStartingPosition(i+1);
 					curr.setMatchedString("");
 				}
-			} else
+			} else{
 				curr.setMatchedString(curr.getMatchedString() + testText.charAt(i));
-			actives.copy(actives2);
-			actives2.clear();
+				actives = actives2; //Why does this have to be in the else loop and not after it?
+			}
 		}
 		freeSteps(actives,entron);
 
