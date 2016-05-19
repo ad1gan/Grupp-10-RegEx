@@ -13,62 +13,51 @@ public class ProjectX{
 	 *   @return true if testText matches with entron otherwise false
 	 */
 	public static RegexMatchResult simulate(String testText, Automaton entron){
-		if(testText.length()==0){}
-		Set<Integer> actives = new Set<Integer>();
-		RegexMatchResult helper = new RegexMatchResult(1, "");
+		Set<Integer> actives   = new Set<Integer>();
+		Set<Integer> actives2  = new Set<Integer>();
+		RegexMatchResult curr  = new RegexMatchResult(1, "");
 		RegexMatchResult valid = new RegexMatchResult(-1,"");
-		boolean PeterPan = false;
-		actives.addElement(entron.start());
 		
 		for(int i = 0; i < testText.length(); i++){
-			for(int j = 0; j < actives.size(); j++)
-				actives.union(cheapConnect(actives.getElement(j),entron));
+			actives.addElement(entron.start());
+			freeSteps(actives,entron);
 			
-			Set<Integer> actives2 = new Set<Integer>();
+			if(actives.contains(entron.end())){ //We already found a valid string, just need to see if it's of maximum length
+				valid.setStartingPosition(curr.getStartingPosition());
+				valid.setMatchedString(curr.getMatchedString());
+			}
 
-			for(int j = 0; j < actives.size(); j++)
-				for(int k = 0; k < entron.getSize(); k++)
-					if ( entron.getEdge(actives.getElement(j),k) == testText.charAt(i) )
+			for(int j=0; j<actives.size(); j++) //"expensive" connect
+				for(int k=0; k<entron.getSize(); k++)
+					if( entron.getEdge(actives.getElement(j),k)==testText.charAt(i) ) 
 						actives2.addElement(k);
 
-			if(simulate(helper.getMatchedString(),entron).getStartingPosition()!=-1){
-				valid = simulate(helper.getMatchedString(),entron);
-				valid.setStartingPosition(i-valid.getMatchedString().length());
-			}
-
-			if(actives2.size()==0){
-				if(helper.getMatchedString()==""){
-					System.out.println("Fall 1 bei " + i);
-					helper.setStartingPosition(i+1);
-				}
-				else if(simulate(helper.getMatchedString(),entron).getStartingPosition()==-1 && valid.getStartingPosition()!=-1){ //Already found a fitting string of maximum length. return
-					System.out.println("Fall 2 bei " + i);
+			if(actives2.size()==0){ //Cannot go further with the current string. Return or scrap?
+				if(valid.getStartingPosition()!=-1) //We already found something valid, so it's of maximum length. Return it.
 					return valid;
+				else{ //We haven't found anything valid. Scrap.
+					curr.setStartingPosition(i+1);
+					curr.setMatchedString("");
 				}
-			} else{
-				helper.setMatchedString(helper.getMatchedString() + testText.charAt(i));
-				actives = actives2;
-			}
+			} else
+				curr.setMatchedString(curr.getMatchedString() + testText.charAt(i));
+			actives.copy(actives2);
+			actives2.clear();
 		}
-		for(int j = 0; j < actives.size(); j++)
-			actives.union(cheapConnect(actives.getElement(j),entron));
+		freeSteps(actives,entron);
 
-		if(!actives.contains(entron.end()))
-			helper.setStartingPosition(-1);
-		return helper;
+		if(!actives.contains(entron.end())) //The last string was not valid, so we haven't found anything
+			curr.setStartingPosition(-1);
+		return curr;
 	}
-
-	/** Finds the subgraph of nodes that is ocnnected to node numb only via "3"-connections
-	*   @param numb the index in the Automaton-graph entron
-	*	@entron the Automaton the subgraph is searched in
-	*	@return Set<Integer> which holds the indices of the nodes
+	/** Extends an existing subgraph with all it's epsilon-connected nodes.
+	*   @param actives The indices of the subgraph that is connected
+	*	@param entron The Automaton the subgraph is searched in
 	*/
-	public static Set<Integer> cheapConnect(int numb, Automaton entron){
-		Set<Integer> helper = new Set<Integer>();
-		for(int i = 0; i < entron.getSize(); i++){
-			if (entron.getNode(numb).getEdge(i)=='3')
-				helper.addElement(i);
-		}
-		return helper;
+	public static void freeSteps(Set<Integer> actives, Automaton entron){
+		for(int i=0; i<actives.size(); i++)
+			for(int j=0;j<entron.getSize();j++)
+				if(entron.getEdge(actives.getElement(i),j)=='3')
+					actives.addElement(j);
 	}
 }
