@@ -27,7 +27,6 @@ public class ProjectX{
 				valid.setMatchedString(curr.getMatchedString());
 			}
 
-			actives2 = new Set<Integer>(); //Why doesn't clear work here?
 			for(int j=0; j<actives.size(); j++) //"expensive" connect
 				for(int k=0; k<entron.getSize(); k++)
 					if( entron.getEdge(actives.getElement(j),k)==testText.charAt(i) ) 
@@ -42,8 +41,9 @@ public class ProjectX{
 				}
 			} else{
 				curr.setMatchedString(curr.getMatchedString() + testText.charAt(i));
-				actives = actives2; //Why does this have to be in the else loop and not after it?
+				actives.copy(actives2);
 			}
+			actives2.clear();
 		}
 		freeSteps(actives,entron);
 
