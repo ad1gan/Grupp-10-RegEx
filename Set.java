@@ -13,7 +13,11 @@ public class Set<T>{
 	 */
 	public Set(){
 		set = new ArrayList<T>() ;
-		set.clear();
+	}
+	public Set(ArrayList<T> s){
+		set = new ArrayList<T>();
+		for(int i=0;i<s.size();i++)
+			this.addElement(s.get(i));
 	}
 	public void copy(Set<T> s){
 		set.clear();

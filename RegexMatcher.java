@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class RegexMatcher{
 
 	public static void main(String[] args) {
@@ -5,6 +7,9 @@ public class RegexMatcher{
 		Automaton entron = new Automaton(oak);
 		RegexMatchResult douche = simulateBFS(args[1], entron);
 		douche.print();
+		RegexMatchResult douche2 = simulateDFS(args[1], entron);
+		douche2.print();
+		
 	}
 
 	public static RegexMatchResult matchSetBased(String regex, String testText){
@@ -12,6 +17,26 @@ public class RegexMatcher{
 		Automaton auto = new Automaton(tree);
 		RegexMatchResult res = simulateBFS(testText, auto);
 		return res;
+	}
+
+	private static RegexMatchResult simulateDFS(String testText, Automaton entron){
+		ArrayList<Pair<Integer,Integer>> stack = new ArrayList<Pair<Integer,Integer>>();
+		Pair<Integer,Integer> cur = new Pair<Integer,Integer>(0,0);
+
+		for(int i=0; i<testText.length(); i++){
+			System.out.println("i ist: " + i);
+			stack.clear();
+			stack.add(new Pair<Integer,Integer>(entron.start(),i-1));
+			while(stack.size()!=0){
+				System.out.println("Starte while");
+				cur = new Pair<Integer,Integer>(stack.get(stack.size()-1).first(),stack.get(stack.size()-1).second());
+				stack.remove(stack.size()-1);
+				if (cur.first()==entron.end())
+					return new RegexMatchResult(i,testText.substring(i,cur.second()));
+				entron.pathSteps(stack,cur,testText);
+			}
+		}
+		return new RegexMatchResult(-1,"");
 	}
 
 	/** Tests if a given string testText matches on an Automaton or actually

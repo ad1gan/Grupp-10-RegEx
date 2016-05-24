@@ -1,6 +1,8 @@
 /** Data Type for Automatons, realized as a Graph
  * @author Lukas
  */
+import java.util.ArrayList;
+
 public class Automaton{
 	private Node[] nodes;
 	private static int counter;
@@ -156,6 +158,16 @@ public class Automaton{
 			for(int j=0;j<getSize();j++)
 				if(getEdge(actives.getElement(i),j)=='3')
 					actives.addElement(j);
+	}
+	public void pathSteps(ArrayList<Pair<Integer,Integer>> stack, Pair<Integer,Integer> top, String text){
+		Set<Integer> helper = new Set<Integer>();
+		helper.addElement(top.first());
+		freeSteps(helper);
+		for(int i=0;i<helper.size();i++)
+			stack.add(new Pair<Integer,Integer>( helper.getElement(i),top.second() ));
+		for(int i=0;i<getSize();i++)
+			if(getEdge(stack.get(stack.size()-1).first(),i)==text.charAt(top.second()+1))
+				stack.add(new Pair<Integer,Integer>(i,top.second()+1));
 	}
 	public void resetcounter(){
 		counter = 0;
