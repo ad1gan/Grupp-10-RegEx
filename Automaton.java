@@ -100,10 +100,19 @@ public class Automaton{
 	 */
 	public Automaton(Tree tree){
 		int size = tree.getVerts();
-		nodes = new Node[size];
-		for(int i=0;i<size;i++)
-			nodes[i] = new Node(size);
-		start_end = parseTree(tree);
+		if(size==1){
+			nodes = new Node[2];
+			nodes[0] = new Node(2);
+			nodes[1] = new Node(2);
+			nodes[0].setEdge(1,tree.getValue());
+			start_end = new Pair<Integer,Integer>(0,1); 
+		} else{
+			nodes = new Node[size];
+			for(int i=0;i<size;i++)
+				nodes[i] = new Node(size);
+
+			start_end = parseTree(tree);
+		}
 	}
 	/** Returns the start index of the Graph
 	 * @return The start index
@@ -138,5 +147,17 @@ public class Automaton{
 	 */
 	public Node getNode(int i){
 		return nodes[i];
+	}
+	/** Extends an existing subgraph with all it's epsilon-connected nodes.
+	*   @param actives The indices of the subgraph that is connected
+	*/
+	public void freeSteps(Set<Integer> actives){
+		for(int i=0; i<actives.size(); i++)
+			for(int j=0;j<getSize();j++)
+				if(getEdge(actives.getElement(i),j)=='3')
+					actives.addElement(j);
+	}
+	public void resetcounter(){
+		counter = 0;
 	}
 }
