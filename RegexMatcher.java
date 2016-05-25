@@ -32,6 +32,7 @@ public class RegexMatcher{
 		Pair<Integer,Integer> cur = new Pair<Integer,Integer>(0,0);
 		Pair<Integer,Integer> valid = new Pair<Integer,Integer>(-1,-1);
 		for(int i=0; i<testText.length(); i++){
+			System.out.println("i ist " + i);
 			stack.clear();
 			stack.add(new Pair<Integer,Integer>(entron.start(),i-1));
 			while(stack.size()!=0){
@@ -40,6 +41,7 @@ public class RegexMatcher{
 				if (cur.first()==entron.end())
 					valid = new Pair<Integer,Integer>(i,cur.second());
 				entron.pathSteps(stack,cur,testText);
+				System.out.println("j ist " + cur.second());
 			}
 			if(valid.first()!=-1 && testText.substring(valid.first(),valid.second()+1).length()!=0)
 				return new RegexMatchResult(valid.first(),testText.substring(valid.first(),valid.second()+1));

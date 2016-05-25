@@ -49,4 +49,26 @@ public class RegexMatcherPathBasedTest{
 	
 	@Test public void t26() {check("(ab|c*d)*", "zzzababcdccdabccccd", 3, "ababcdccdabccccd");}
 	//	Write also your own unit tests here
+	@Test public void s01() {check("A((AG|AA)*)",   "AAABAAG",           0,"AAA"     );}
+	@Test public void s02() {check("AE((AG|AA)*)",  "----AEAGAAA---",    4,"AEAGAA"  );}
+	@Test public void s03() {check("AE((AG|AA)*)",  "----AEAGAAAE---",   4,"AEAGAA"  );}
+	@Test public void s04() {check("AE((AG|AA)*)",  "----AEAGAABAE---",  4,"AEAGAA"  );}
+	@Test public void s05() {check("AE((AG|AA)*)",  "----AEAGAAGAE---",  4,"AEAGAA"  );}
+	@Test public void s06() {check("AE((AG|AA)*)",  "----AEAGAAAAE---",  4,"AEAGAAAA");}
+	@Test public void s07() {check("AE((AG|AA)*)",  "----AEAGAAABAE---", 4,"AEAGAA"  );}
+	@Test public void s08() {check("AE((AG|AA)*)",  "----AEAGAAAAAE---", 4,"AEAGAAAA");}
+	@Test public void s09() {check("AE((AG|AB)*)",  "----AEAGABAAAAE---",4,"AEAGAB"  );}
+	@Test public void s10() {check("AE((AG|AB)*)",  "----AEAGABCAAAE---",4,"AEAGAB"  );}
+	@Test public void s11() {check("AE((AG|AB)*)",  "----AEAGABACAAE---",4,"AEAGAB"  );}
+	@Test public void s12() {check("AE((AG|AB)*)",  "----AEAGABABAAE---",4,"AEAGABAB");}
+	@Test public void s13() {check("AE((AG|AB)*)",  "----AEAGABAEAAE---",4,"AEAGAB"  );}
+	@Test public void s14() {check("AE((AG|AB)*)",  "----AEAGABEAAAE---",4,"AEAGAB"  );}
+	@Test public void s15() {check("AE((AG|AB)*)E", "----AEAGABEAAAE---",4,"AEAGABE" );}
+	@Test public void s16() {check("AE((AG|AB)*)EA","----AEAGABEAAAE---",4,"AEAGABEA");}
+
+	@Test public void b01() {check("(ab)*","aab",1,"ab");}
+	@Test public void b02() {check("(ab)?","aaabcde",2,"ab");}
+	@Test public void b03() {check("(ab)+","cqaababrq",3,"abab");}
+	@Test public void b04() {check("((ab)?)*","deabab",2,"abab");}
+	@Test public void b05() {check("((ab)+)b)","deababb",2,"ababb");}
 }
