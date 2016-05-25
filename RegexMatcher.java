@@ -19,22 +19,30 @@ public class RegexMatcher{
 		return res;
 	}
 
+	public static RegexMatchResult matchPathBased(String regex, String testText){
+		Tree tree = new Tree(regex);
+		Automaton auto = new Automaton(tree);
+		RegexMatchResult res = simulateDFS(testText, auto);
+		return res;
+	}
+
 	private static RegexMatchResult simulateDFS(String testText, Automaton entron){
+		testText = testText + '-';
 		ArrayList<Pair<Integer,Integer>> stack = new ArrayList<Pair<Integer,Integer>>();
 		Pair<Integer,Integer> cur = new Pair<Integer,Integer>(0,0);
-
+		Pair<Integer,Integer> valid = new Pair<Integer,Integer>(-1,-1);
 		for(int i=0; i<testText.length(); i++){
-			System.out.println("i ist: " + i);
 			stack.clear();
 			stack.add(new Pair<Integer,Integer>(entron.start(),i-1));
 			while(stack.size()!=0){
-				cur = new Pair<Integer,Integer>(stack.get(stack.size()-1).first(),stack.get(stack.size()-1).second());
-				System.out.println("String:" + i + " " + cur.second());
+				cur = stack.get(stack.size()-1);
 				stack.remove(stack.size()-1);
 				if (cur.first()==entron.end())
-					return new RegexMatchResult(i,testText.substring(i,cur.second()));
+					valid = new Pair<Integer,Integer>(i,cur.second());
 				entron.pathSteps(stack,cur,testText);
 			}
+			if(valid.first()!=-1 && testText.substring(valid.first(),valid.second()+1).length()!=0)
+				return new RegexMatchResult(valid.first(),testText.substring(valid.first(),valid.second()+1));
 		}
 		return new RegexMatchResult(-1,"");
 	}
@@ -50,7 +58,6 @@ public class RegexMatcher{
 		Set<Integer> actives2  = new Set<Integer>();
 		RegexMatchResult curr  = new RegexMatchResult(0, "");
 		RegexMatchResult valid = new RegexMatchResult(-1,"");
-		entron.resetcounter();
 		actives.addElement(entron.start());
 		
 		for(int i=0; i<testText.length(); i++){

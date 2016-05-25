@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Automaton{
 	private Node[] nodes;
-	private static int counter;
+	private int counter;
 	private Pair<Integer,Integer> start_end;
 
 	private Pair<Integer,Integer> parseTree(Tree tree){
@@ -163,13 +163,14 @@ public class Automaton{
 		Set<Integer> helper = new Set<Integer>();
 		helper.addElement(top.first());
 		freeSteps(helper);
-		for(int i=0;i<helper.size();i++)
-			stack.add(new Pair<Integer,Integer>( helper.getElement(i),top.second() ));
-		for(int i=0;i<getSize();i++)
-			if(getEdge(stack.get(stack.size()-1).first(),i)==text.charAt(top.second()+1))
-				stack.add(new Pair<Integer,Integer>(i,top.second()+1));
-	}
-	public void resetcounter(){
-		counter = 0;
+		for(int i=0; i<helper.size(); i++)
+			if(helper.getElement(i)!=top.first())
+				stack.add(new Pair<Integer,Integer>( helper.getElement(i),top.second() ));
+		stack.add(top);
+		if(stack.size()>0)
+			for(int i=0; i<getSize(); i++)
+				if(getEdge(stack.get(stack.size()-1).first(),i)==text.charAt(top.second()+1))
+					stack.add(new Pair<Integer,Integer>(i,top.second()+1));
+		stack.remove(top);
 	}
 }
