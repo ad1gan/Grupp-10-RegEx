@@ -7,7 +7,6 @@ public class RegexMatchResult {
         startingPosition = i;
         matchedString = s;
     }
-
     public void setStartingPosition(int i){
         startingPosition = i;
     }
