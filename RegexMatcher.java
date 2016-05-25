@@ -19,6 +19,13 @@ public class RegexMatcher{
 		return res;
 	}
 
+	public static RegexMatchResult matchPathBased(String regex, String testText){
+		Tree tree = new Tree(regex);
+		Automaton auto = new Automaton(tree);
+		RegexMatchResult res = simulateDFS(testText, auto);
+		return res;
+	}
+
 	private static RegexMatchResult simulateDFS(String testText, Automaton entron){
 		ArrayList<Pair<Integer,Integer>> stack = new ArrayList<Pair<Integer,Integer>>();
 		Pair<Integer,Integer> cur = new Pair<Integer,Integer>(0,0);
@@ -33,12 +40,10 @@ public class RegexMatcher{
 				stack.remove(stack.size()-1);
 				if (cur.first()==entron.end())
 					valid = new Pair<Integer,Integer>(i,cur.second());
-				else if(valid.first()!=-1)
-					return new RegexMatchResult(valid.first(),testText.substring(valid.first(),valid.second()+1));
-
 				entron.pathSteps(stack,cur,testText);
-
 			}
+			if(valid.first()!=-1)
+				return new RegexMatchResult(valid.first(),testText.substring(valid.first(),valid.second()+1));
 		}
 		return new RegexMatchResult(-1,"");
 	}
