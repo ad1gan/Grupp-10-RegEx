@@ -7,7 +7,6 @@ public class Pair<A,B>{
 	private A a;
 	private B b;
 	
-	public Pair(){ }
 	/** Initializes the Pair
 	 * @param a The value of the first  variable
 	 * @param b The value of the second variable

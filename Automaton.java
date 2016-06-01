@@ -68,7 +68,6 @@ public class Automaton{
 			nodes[counter].setEdge(counter+1,'3');
 			nodes[counter].setEdge(l.first(),'3');
 			nodes[l.second()].setEdge(counter+1,'3');
-			System.out.println("counter: " + counter + " Links: " + l.first() + " Rechts: " + l.second());
 			counter+=2;
 			return new Pair<Integer,Integer>(counter-2,counter-1);
 		} else{
@@ -142,6 +141,10 @@ public class Automaton{
 				if(getEdge(actives.getElement(i),j)=='3')
 					actives.addElement(j);
 	}
+	/** Checks whether you can start the BFS with that character
+	*   @param c The character one wants to start with
+	*	@return Describes whether you can start with it
+	*/
 	public boolean startsright(char c){
 		Set<Integer> s = new Set<Integer>();
 		s.addElement(start());
@@ -152,6 +155,8 @@ public class Automaton{
 					return true;
 		return false;
 	}
+	/** Moves loopes around ? Operators into the operator to avoid 3-loops
+	*/
 	public void fixdat(){
 		for(int i=0;i<qms.size();i++){
 			int a = qms.get(i).first();

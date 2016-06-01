@@ -36,7 +36,8 @@ public class Set<T>{
 
 		return failure;
 	}
-
+	/** Removes all elements from the list
+	 */
 	public boolean contains(T elem){
 		return this.set.contains(elem);
 	}
