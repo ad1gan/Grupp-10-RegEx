@@ -7,6 +7,7 @@ public class Automaton{
 	private Node[] nodes;
 	private int counter;
 	private Pair<Integer,Integer> start_end;
+	private ArrayList<Pair<Integer,Integer>> qms;
 
 	private Pair<Integer,Integer> parseTree(Tree tree){
 		if(tree.getValue()=='.'){
@@ -60,13 +61,14 @@ public class Automaton{
 			return new Pair<Integer,Integer>(counter-2, counter-1);
 		} else if(tree.getValue()=='?'){
 			Pair<Integer,Integer> l = parseTree(tree.getLeft());
+			qms.add(new Pair<Integer,Integer>(counter,l.first()));
 			nodes[counter]   = new Node(nodes.length);
 			nodes[counter+1] = new Node(nodes.length);
 
 			nodes[counter].setEdge(counter+1,'3');
 			nodes[counter].setEdge(l.first(),'3');
 			nodes[l.second()].setEdge(counter+1,'3');
-
+			System.out.println("counter: " + counter + " Links: " + l.first() + " Rechts: " + l.second());
 			counter+=2;
 			return new Pair<Integer,Integer>(counter-2,counter-1);
 		} else{
@@ -81,6 +83,7 @@ public class Automaton{
 	 * @param tree The Tree that is to be parsed
 	 */
 	public Automaton(Tree tree){
+		qms = new ArrayList<Pair<Integer,Integer>>();
 		int size = tree.getVerts();
 		if(size==1){
 			nodes = new Node[2];
@@ -148,5 +151,18 @@ public class Automaton{
 				if(getEdge(s.getElement(i),j)==c)
 					return true;
 		return false;
+	}
+	public void fixdat(){
+		for(int i=0;i<qms.size();i++){
+			int a = qms.get(i).first();
+			int b = qms.get(i).second();
+			if (getEdge(a+1,a)=='3'){
+				nodes[a+1].setEdge(a,'0');
+				if(a-b>2)
+					nodes[a-2].setEdge(qms.get(i).second(),'3');
+				else
+					nodes[a-1].setEdge(qms.get(i).second(),'3');
+			}
+		}
 	}
 }

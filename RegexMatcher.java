@@ -27,6 +27,7 @@ public class RegexMatcher{
 	}
 
 	private static RegexMatchResult simulateDFS(String testText, Automaton entron){
+		entron.fixdat();
 		ArrayList<Pair<Integer,Integer>> stack = new ArrayList<Pair<Integer,Integer>>();
 		Pair<Integer,Integer> cur = new Pair<Integer,Integer>(0,0);
 		Pair<Integer,Integer> valid = new Pair<Integer,Integer>(-1,-1);
@@ -38,9 +39,9 @@ public class RegexMatcher{
 				stack.remove(stack.size()-1);
 				if (cur.first()==entron.end())
 					valid = new Pair<Integer,Integer>(i,cur.second());
-				
+
 				for(int j=0;j<entron.getSize();j++){
-					if(entron.getNode(cur.first()).getEdge(j)=='3')
+					if(entron.getNode(cur.first()).getEdge(j)=='3' && entron.getNode(j).getEdge(cur.first())!='3')
 						stack.add(new Pair<Integer,Integer>(j,cur.second()));
 					else if(cur.second()+1<testText.length() && entron.getNode(cur.first()).getEdge(j)==testText.charAt(cur.second()+1))
 						stack.add(new Pair<Integer,Integer>(j,cur.second()+1));
