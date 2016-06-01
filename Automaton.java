@@ -14,14 +14,8 @@ public class Automaton{
 			Pair<Integer,Integer> r = parseTree(tree.getRight());
 			//Nicht exakt gleiche Realisierung wie in Notes, aber nah genug
 			nodes[counter] = new Node(nodes.length);
-			if(l.first()!=l.second())
-				nodes[l.second()].setEdge(counter,'3');
-			else
-				nodes[l.second()].setEdge(counter,tree.getLeft().getValue());
-			if(r.first()!=r.second())
-				nodes[counter].setEdge(r.first(),'3');
-			else
-				nodes[counter].setEdge(r.first(),tree.getRight().getValue());
+			nodes[l.second()].setEdge(counter,'3');
+			nodes[counter].setEdge(r.first(),'3');
 			counter++;
 			return new Pair<Integer,Integer>(l.first(),r.second());
 		} else if(tree.getValue()=='|'){
@@ -32,14 +26,8 @@ public class Automaton{
 			nodes[counter]   = new Node(nodes.length);
 			nodes[counter+1] = new Node(nodes.length);
 			//Legt Edges von erster Node aus an
-			if(l.first()!=l.second())
-				nodes[counter].setEdge(l.first(),'3');
-			else
-				nodes[counter].setEdge(l.first(),tree.getLeft().getValue());
-			if(r.first()!=r.second())
-				nodes[counter].setEdge(r.first(),'3');
-			else
-				nodes[counter].setEdge(r.first(),tree.getRight().getValue());
+			nodes[counter].setEdge(l.first(),'3');
+			nodes[counter].setEdge(r.first(),'3');
 			//Legt Edges zu letzer Node an
 			nodes[l.second()].setEdge(counter+1,'3');
 			nodes[r.second()].setEdge(counter+1,'3');
@@ -55,10 +43,7 @@ public class Automaton{
 			nodes[counter].setEdge(counter+1,'3');
 			nodes[l.second()].setEdge(counter+1,'3');
 
-			if(l.first()!=l.second())
-				nodes[l.second()].setEdge(l.first(),'3');
-			else
-				nodes[l.second()].setEdge(l.first(),tree.getLeft().getValue());
+			nodes[l.second()].setEdge(l.first(),'3');
 
 			counter+=2;
 			return new Pair<Integer,Integer>(counter-2, counter-1);
@@ -69,11 +54,7 @@ public class Automaton{
 
 			nodes[counter].setEdge(l.first(),'3');
 			nodes[l.second()].setEdge(counter+1,'3');
-
-			if(l.first()!=l.second())
-				nodes[l.second()].setEdge(l.first(),'3');
-			else
-				nodes[l.second()].setEdge(l.first(),tree.getLeft().getValue());
+			nodes[l.second()].setEdge(l.first(),'3');
 
 			counter+=2;
 			return new Pair<Integer,Integer>(counter-2, counter-1);
@@ -83,18 +64,17 @@ public class Automaton{
 			nodes[counter+1] = new Node(nodes.length);
 
 			nodes[counter].setEdge(counter+1,'3');
-			if(l.first()!=l.second())
-				nodes[counter].setEdge(l.first(),'3');
-			else
-				nodes[counter].setEdge(l.first(),tree.getLeft().getValue());
+			nodes[counter].setEdge(l.first(),'3');
 			nodes[l.second()].setEdge(counter+1,'3');
 
 			counter+=2;
 			return new Pair<Integer,Integer>(counter-2,counter-1);
 		} else{
 			nodes[counter] = new Node(nodes.length);
-			counter++;
-			return new Pair<Integer,Integer>(counter-1,counter-1);
+			nodes[counter+1] = new Node(nodes.length);
+			nodes[counter].setEdge(counter+1,tree.getValue());
+			counter+=2;
+			return new Pair<Integer,Integer>(counter-2,counter-1);
 		}
 	}
 	/** Creates the Automaton
@@ -168,19 +148,5 @@ public class Automaton{
 				if(getEdge(s.getElement(i),j)==c)
 					return true;
 		return false;
-	}
-	public void pathSteps(ArrayList<Pair<Integer,Integer>> stack, Pair<Integer,Integer> top, String text){
-		Set<Integer> helper = new Set<Integer>();
-		helper.addElement(top.first());
-		freeSteps(helper);
-		for(int i=0; i<helper.size(); i++)
-			if(helper.getElement(i)!=top.first())
-				stack.add(new Pair<Integer,Integer>( helper.getElement(i),top.second() ));
-		stack.add(top);
-		if(stack.size()>0)
-			for(int i=0; i<getSize(); i++)
-				if(getEdge(stack.get(stack.size()-1).first(),i)==text.charAt(top.second()+1))
-					stack.add(new Pair<Integer,Integer>(i,top.second()+1));
-		stack.remove(top);
 	}
 }

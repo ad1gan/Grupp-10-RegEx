@@ -47,10 +47,10 @@ public class Tree{
 	 */
 	public int getVerts(){
 		int res;
-		if(value=='|' || value=='*' || value=='+' || value=='?')
-			res = 2;
-		else
+		if(value=='.')
 			res = 1;
+		else
+			res = 2;
 		if (this.left!=null)
 			res+=this.left.getVerts();
 		if (this.right!=null)
