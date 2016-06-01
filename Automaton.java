@@ -159,9 +159,9 @@ public class Automaton{
 			if (getEdge(a+1,a)=='3'){
 				nodes[a+1].setEdge(a,'0');
 				if(a-b>2)
-					nodes[a-2].setEdge(qms.get(i).second(),'3');
+					nodes[a-2].setEdge(b,'3');
 				else
-					nodes[a-1].setEdge(qms.get(i).second(),'3');
+					nodes[a-1].setEdge(b,'3');
 			}
 		}
 	}
