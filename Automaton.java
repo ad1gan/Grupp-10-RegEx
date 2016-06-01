@@ -159,6 +159,16 @@ public class Automaton{
 				if(getEdge(actives.getElement(i),j)=='3')
 					actives.addElement(j);
 	}
+	public boolean startsright(char c){
+		Set<Integer> s = new Set<Integer>();
+		s.addElement(start());
+		freeSteps(s);
+		for(int i=0; i<s.size(); i++)
+			for(int j=0;j<getSize();j++)
+				if(getEdge(s.getElement(i),j)==c)
+					return true;
+		return false;
+	}
 	public void pathSteps(ArrayList<Pair<Integer,Integer>> stack, Pair<Integer,Integer> top, String text){
 		Set<Integer> helper = new Set<Integer>();
 		helper.addElement(top.first());
