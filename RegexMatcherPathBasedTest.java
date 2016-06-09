@@ -8,8 +8,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * 
- * @author 
+ * @author Adrian Kolb
  * Tests RegEx with breadth-first search with several test-routines 
  */
 public class RegexMatcherPathBasedTest{

@@ -1,10 +1,7 @@
 /**
  * Represents the result of a matching String in RegEx
- * @author 
- *
  */
 public class RegexMatchResult {
-
     private int startingPosition;
     private String matchedString;
 
@@ -24,7 +21,6 @@ public class RegexMatchResult {
     public void setStartingPosition(int i){
         startingPosition = i;
     }
-    
     /**
      * set matched String
      * @param s
@@ -40,7 +36,6 @@ public class RegexMatchResult {
     public String getMatchedString() {
         return matchedString;
     }
-
     /**
      * prints the result of Regex, whereby -1 is a symbol for no match
      */

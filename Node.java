@@ -1,5 +1,5 @@
 /** Data Type for Nodes of Automatons
- * @author Lukas
+ * @author Lukas Juschka
  */
 public class Node{
 	private char[] edges;

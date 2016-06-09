@@ -1,12 +1,10 @@
 import java.util.ArrayList;
 
 /**
- * 
- * @author 
+ * @author Lukas Juschka, Adrian Kolb, Frederick Wehr
  * The main of the project RegEx which search the first longest expression in a regular expression
  */
 public class RegexMatcher{
-
 	/**
 	 * Tests if a given Text matches on an Automaton or actually if it matches to a
 	 * regular expression.
@@ -16,12 +14,11 @@ public class RegexMatcher{
 	 */
 	public static void main(String[] args) {
 		Tree oak = new Tree(args[0]);
-		Automaton entron = new Automaton(oak);
-		RegexMatchResult douche = simulateBFS(args[1], entron);
+		Automaton entoron = new Automaton(oak);
+		RegexMatchResult douche = simulateBFS(args[1], entoron);
 		douche.print();
-		RegexMatchResult douche2 = simulateDFS(args[1], entron);
+		RegexMatchResult douche2 = simulateDFS(args[1], entoron);
 		douche2.print();
-		
 	}
 	/**
 	 * Tests if a given string testText matches on an Autamoton or actually
@@ -36,7 +33,6 @@ public class RegexMatcher{
 		RegexMatchResult res = simulateBFS(testText, auto);
 		return res;
 	}
-
 	/**
 	 * Tests if a given string testText matches on an Autamoton or actually
 	 * if it matches a regular expression with Path-based simulation
@@ -50,33 +46,31 @@ public class RegexMatcher{
 		RegexMatchResult res = simulateDFS(testText, auto);
 		return res;
 	}
-
-
 	/**
 	 * Tests if a given string testText matches on an Automaton or actually
 	 * if it matches a regular expression returns true if it's a yes
 	 * @param testText
-	 * @param entron
-	 * @return true if testText matches with entron otherwise false
+	 * @param entoron
+	 * @return true if testText matches with entoron otherwise false
 	 */
-	private static RegexMatchResult simulateDFS(String testText, Automaton entron){
-		entron.fixdat();
+	private static RegexMatchResult simulateDFS(String testText, Automaton entoron){
+		entoron.fixdat();
 		ArrayList<Pair<Integer,Integer>> stack = new ArrayList<Pair<Integer,Integer>>();
 		Pair<Integer,Integer> cur = new Pair<Integer,Integer>(0,0);
 		Pair<Integer,Integer> valid = new Pair<Integer,Integer>(-1,-1);
 		for(int i=0; i<testText.length(); i++){
 			stack.clear();
-			stack.add(new Pair<Integer,Integer>(entron.start(),i-1));
+			stack.add(new Pair<Integer,Integer>(entoron.start(),i-1));
 			while(stack.size()!=0){
 				cur = stack.get(stack.size()-1);
 				stack.remove(stack.size()-1);
-				if (cur.first()==entron.end())
+				if (cur.first()==entoron.end())
 					valid = new Pair<Integer,Integer>(i,cur.second());
 
-				for(int j=0;j<entron.getSize();j++){
-					if(entron.getNode(cur.first()).getEdge(j)=='3' && entron.getNode(j).getEdge(cur.first())!='3')
+				for(int j=0;j<entoron.getSize();j++){
+					if(entoron.getNode(cur.first()).getEdge(j)=='3' && entoron.getNode(j).getEdge(cur.first())!='3')
 						stack.add(new Pair<Integer,Integer>(j,cur.second()));
-					else if(cur.second()+1<testText.length() && entron.getNode(cur.first()).getEdge(j)==testText.charAt(cur.second()+1))
+					else if(cur.second()+1<testText.length() && entoron.getNode(cur.first()).getEdge(j)==testText.charAt(cur.second()+1))
 						stack.add(new Pair<Integer,Integer>(j,cur.second()+1));
 				}
 			}
@@ -92,8 +86,8 @@ public class RegexMatcher{
 	/** Tests if a given string testText matches on an Automaton or actually
 	 *   if it matches a regular expression returns true if it's a yes
 	 *   @param testText the String which is tested
-	 *   @param entron the Automaton that represents the given regular expression
-	 *   @return true if testText matches with entron otherwise false
+	 *   @param entoron the Automaton that represents the given regular expression
+	 *   @return true if testText matches with entoron otherwise false
 	 */
 	private static RegexMatchResult simulateBFS(String testText, Automaton entoron){
 		Set<Integer> actives   = new Set<Integer>();

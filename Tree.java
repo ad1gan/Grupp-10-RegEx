@@ -1,5 +1,5 @@
 /** Data Type for binary Trees of characters
- * @author Adrian and Lukas
+ * @author Adrian Kolb, Lukas Juschka
  */
 public class Tree{
 	private char value;

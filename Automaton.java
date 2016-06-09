@@ -1,8 +1,7 @@
 /** Data Type for Automatons, realized as a Graph
- * @author Lukas
+ * @author Lukas Juschka
  */
 import java.util.ArrayList;
-
 
 public class Automaton{
 	private Node[] nodes;
@@ -14,26 +13,24 @@ public class Automaton{
 		if(tree.getValue()=='.'){
 			Pair<Integer,Integer> l = parseTree(tree.getLeft());
 			Pair<Integer,Integer> r = parseTree(tree.getRight());
-			//Nicht exakt gleiche Realisierung wie in Notes, aber nah genug
 			nodes[counter] = new Node(nodes.length);
 			nodes[l.second()].setEdge(counter,'3');
 			nodes[counter].setEdge(r.first(),'3');
 			counter++;
 			return new Pair<Integer,Integer>(l.first(),r.second());
 		} else if(tree.getValue()=='|'){
-			//Oberer und unterer grauer Block; Pair jeweils erstes und letzes Element
 			Pair<Integer,Integer> l = parseTree(tree.getLeft());
 			Pair<Integer,Integer> r = parseTree(tree.getRight());
-			//Legt Anfangs und Endnode an
+
 			nodes[counter]   = new Node(nodes.length);
 			nodes[counter+1] = new Node(nodes.length);
-			//Legt Edges von erster Node aus an
+
 			nodes[counter].setEdge(l.first(),'3');
 			nodes[counter].setEdge(r.first(),'3');
-			//Legt Edges zu letzer Node an
+
 			nodes[l.second()].setEdge(counter+1,'3');
 			nodes[r.second()].setEdge(counter+1,'3');
-			//Berichtigt Counter
+			
 			counter+=2;
 			return new Pair<Integer,Integer>(counter-2, counter-1);
 		} else if(tree.getValue()=='*'){
@@ -79,7 +76,22 @@ public class Automaton{
 			return new Pair<Integer,Integer>(counter-2,counter-1);
 		}
 	}
-	
+	/**
+	 * Moves loops around '?' operator into the operator to avoid '3'-loops
+	 */
+	private void fixdat(){
+		for(int i=0;i<qms.size();i++){
+			int a = qms.get(i).first();
+			int b = qms.get(i).second();
+			if (getEdge(a+1,a)=='3'){
+				nodes[a+1].setEdge(a,'0');
+				if(a-b>2)
+					nodes[a-2].setEdge(b,'3');
+				else
+					nodes[a-1].setEdge(b,'3');
+			}
+		}
+	}
 	/** Creates the Automaton
 	 * @param tree The Tree that is to be parsed
 	 */
@@ -118,8 +130,10 @@ public class Automaton{
 	public char getEdge(int s, int e){
 		return nodes[s].getEdge(e);
 	}
-
-
+	/** Returns the node with Index i
+	 * @param i The index of the Node
+	 * @return The requested node
+	 */
 	public Node getNode(int i){
 		return nodes[i];
 	}
@@ -132,7 +146,6 @@ public class Automaton{
 				if(getEdge(actives.getElement(i),j)=='3')
 					actives.addElement(j);
 	}
-	
 	/** Checks whether you can the BFS with that character
 	 * @param c The character you want to start with
 	 * @return The Node you end up with that character, -1 if you cannot
@@ -146,22 +159,5 @@ public class Automaton{
 				if(getEdge(s.getElement(i),j)==c)
 					return j;
 		return -1;
-	}
-	
-	/**
-	 * Moves loops around '?' operator into the operator to avoid '3'-loops
-	 */
-	public void fixdat(){
-		for(int i=0;i<qms.size();i++){
-			int a = qms.get(i).first();
-			int b = qms.get(i).second();
-			if (getEdge(a+1,a)=='3'){
-				nodes[a+1].setEdge(a,'0');
-				if(a-b>2)
-					nodes[a-2].setEdge(b,'3');
-				else
-					nodes[a-1].setEdge(b,'3');
-			}
-		}
 	}
 }

@@ -1,7 +1,7 @@
 /** Data Type for a Pair of two Datatypes
  * @param <A> Type of the first Element
  * @param <B> Type of the second Element
- * @author Lukas
+ * @author Lukas Juschka
  */
 public class Pair<A,B>{
 	private A a;
