@@ -7,9 +7,20 @@
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-
+/**
+ * 
+ * @author 
+ * Tests RegEx with breadth-first search with several test-routines 
+ */
 public class RegexMatcherPathBasedTest{
 
+	/**
+	 * checks the solution with the computed Strings respectively position of the String
+	 * @param regex regular expression
+	 * @param text word
+	 * @param correctStartingPosition 
+	 * @param correctMatchedString
+	 */
 	private void check(String regex, String text, int correctStartingPosition, String correctMatchedString){
 		RegexMatchResult calculatedResult = RegexMatcher.matchPathBased(regex, text);
 		boolean c1 = (calculatedResult.getStartingPosition() == correctStartingPosition);
@@ -74,4 +85,8 @@ public class RegexMatcherPathBasedTest{
 	@Test public void b06() {check("((a*)*)b","deababb",   2,"ab"   );}
 	@Test public void b07() {check("((ab)+cb","dabeabcbab",4,"abcb" );}
 	@Test public void b08() {check("((ab)+)b","bdabeabbc", 5,"abb"  );}
+	
+	// Pathfinder kill
+	//@Test public void k02() {check("(((((bAA|cAA)|dAA)|eAA)|(AAA)*)|(((((((f|bAA)|cAA)|dAA)|eAA)|AAA)*)aAA))", "aAbAcAdAeAqAAfaAA", 13, "faAA");}	
+	@Test public void k02() {check("((((((((bAA|cAA)|dAA)|eAA)|(AAA)+)|(((((((f|bAA)|cAA)|dAA)|eAA)|AAA)*)aAA))*)*)*)", "aAbAcaAeAdAaAeAaAbAcaAeAdAaAeAqwmAdAeAqAAfaAA", 41, "faAA");}	
 }

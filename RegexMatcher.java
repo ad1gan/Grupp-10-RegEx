@@ -1,7 +1,19 @@
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author 
+ * The main of the project RegEx which search the first longest expression in a regular expression
+ */
 public class RegexMatcher{
 
+	/**
+	 * Tests if a given Text matches on an Automaton or actually if it matches to a
+	 * regular expression.
+	 * Firstly it searchs in a Set-Based Simulation afterwards in a Path-Based simulation
+	 * and prints the result.
+	 * @param args expect a Text and the Regular Expression 
+	 */
 	public static void main(String[] args) {
 		Tree oak = new Tree(args[0]);
 		Automaton entron = new Automaton(oak);
@@ -11,7 +23,13 @@ public class RegexMatcher{
 		douche2.print();
 		
 	}
-
+	/**
+	 * Tests if a given string testText matches on an Autamoton or actually
+	 * if it matches a regular expression with Set-based simulation
+	 * @param regex
+	 * @param testText
+	 * @return The starting position and the founded String, otherwise -1 and ""
+	 */
 	public static RegexMatchResult matchSetBased(String regex, String testText){
 		Tree tree = new Tree(regex);
 		Automaton auto = new Automaton(tree);
@@ -19,6 +37,13 @@ public class RegexMatcher{
 		return res;
 	}
 
+	/**
+	 * Tests if a given string testText matches on an Autamoton or actually
+	 * if it matches a regular expression with Path-based simulation
+	 * @param regex
+	 * @param testText
+	 * @return The starting position and the founded String, otherwise -1 and ""
+	 */
 	public static RegexMatchResult matchPathBased(String regex, String testText){
 		Tree tree = new Tree(regex);
 		Automaton auto = new Automaton(tree);
@@ -26,6 +51,14 @@ public class RegexMatcher{
 		return res;
 	}
 
+
+	/**
+	 * Tests if a given string testText matches on an Automaton or actually
+	 * if it matches a regular expression returns true if it's a yes
+	 * @param testText
+	 * @param entron
+	 * @return true if testText matches with entron otherwise false
+	 */
 	private static RegexMatchResult simulateDFS(String testText, Automaton entron){
 		entron.fixdat();
 		ArrayList<Pair<Integer,Integer>> stack = new ArrayList<Pair<Integer,Integer>>();
@@ -50,6 +83,9 @@ public class RegexMatcher{
 			if(valid.first()!=-1 && testText.substring(valid.first(),valid.second()+1).length()!=0)
 				return new RegexMatchResult(valid.first(),testText.substring(valid.first(),valid.second()+1));
 		}
+		if(valid.first()!=-1)
+			return new RegexMatchResult(0,"");
+		
 		return new RegexMatchResult(-1,"");
 	}
 

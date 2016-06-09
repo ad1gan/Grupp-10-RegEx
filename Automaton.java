@@ -3,6 +3,7 @@
  */
 import java.util.ArrayList;
 
+
 public class Automaton{
 	private Node[] nodes;
 	private int counter;
@@ -78,25 +79,18 @@ public class Automaton{
 			return new Pair<Integer,Integer>(counter-2,counter-1);
 		}
 	}
+	
 	/** Creates the Automaton
 	 * @param tree The Tree that is to be parsed
 	 */
 	public Automaton(Tree tree){
 		qms = new ArrayList<Pair<Integer,Integer>>();
 		int size = tree.getVerts();
-		if(size==1){
-			nodes = new Node[2];
-			nodes[0] = new Node(2);
-			nodes[1] = new Node(2);
-			nodes[0].setEdge(1,tree.getValue());
-			start_end = new Pair<Integer,Integer>(0,1); 
-		} else{
-			nodes = new Node[size];
-			for(int i=0;i<size;i++)
-				nodes[i] = new Node(size);
+		nodes = new Node[size];
+		for(int i=0;i<size;i++)
+			nodes[i] = new Node(size);
 
-			start_end = parseTree(tree);
-		}
+		start_end = parseTree(tree);
 	}
 	/** Returns the start index of the Graph
 	 * @return The start index
@@ -124,11 +118,8 @@ public class Automaton{
 	public char getEdge(int s, int e){
 		return nodes[s].getEdge(e);
 	}
-	/** Changes the edge between two Nodes. '3' means eps, '0' no connection
-	 * @param s The index of the Node at which the edge starts
-	 * @param e The index of the Node at which the edge ends
-	 * @param c The character the edge will be set to
-	 */
+
+
 	public Node getNode(int i){
 		return nodes[i];
 	}
@@ -141,10 +132,12 @@ public class Automaton{
 				if(getEdge(actives.getElement(i),j)=='3')
 					actives.addElement(j);
 	}
-	/** Checks whether you can start the BFS with that character
-	*   @param c The character one wants to start with
-	*	@return Describes whether you can start with it
-	*/
+	
+	/**
+	 * Checks whether you can the BFS with that character
+	 * @param c The character you want to start with
+	 * @return Describes whether you can start with
+	 */
 	public boolean startsright(char c){
 		Set<Integer> s = new Set<Integer>();
 		s.addElement(start());
@@ -155,8 +148,10 @@ public class Automaton{
 					return true;
 		return false;
 	}
-	/** Moves loopes around ? Operators into the operator to avoid 3-loops
-	*/
+	
+	/**
+	 * Moves loops around '?' operator into the operator to avoid '3'-loops
+	 */
 	public void fixdat(){
 		for(int i=0;i<qms.size();i++){
 			int a = qms.get(i).first();

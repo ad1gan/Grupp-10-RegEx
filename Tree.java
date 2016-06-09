@@ -57,6 +57,8 @@ public class Tree{
 			res+=this.right.getVerts();
 		return res;
 	}
+	
+	
 	private Pair<Tree,Integer> parseExpression(String p, int j){
 		Tree L = null;
 		while(j<p.length()){

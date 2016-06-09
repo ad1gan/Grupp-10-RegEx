@@ -7,9 +7,20 @@
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-
+/**
+ * 
+ * @author 
+ * Tests RegEx with depth-first search with several test-routines 
+ */
 public class RegexMatcherSetBasedTest{
 
+	/**
+	 * checks the solution with the computed Strings respectively position of the String
+	 * @param regex regular expression
+	 * @param text word
+	 * @param correctStartingPosition 
+	 * @param correctMatchedString
+	 */
 	private void check(String regex, String text, int correctStartingPosition, String correctMatchedString){
 		RegexMatchResult calculatedResult = RegexMatcher.matchSetBased(regex, text);
 		boolean c1 = (calculatedResult.getStartingPosition() == correctStartingPosition);
@@ -44,8 +55,8 @@ public class RegexMatcherSetBasedTest{
 
 	@Test public void t22() {check("(ab|cd)*", "zzababcdcdzz", 2, "ababcdcd");}
 	@Test public void t23() {check("(ab|cd)*", "zzabcdabcdzz", 2, "abcdabcd");}
-	@Test public void t24() {check("k((ab|cd)*)", "zkabcdabcdmz", 1, "kabcdabcd");}  //abgeändert (klammern)
-	@Test public void t25() {check("k((ab|cd)*)m", "zkabcdabcdmz", 1, "kabcdabcdm");}//abgeändert (klammern)
+	@Test public void t24() {check("k((ab|cd)*)", "zkabcdabcdmz", 1, "kabcdabcd");}  
+	@Test public void t25() {check("k((ab|cd)*)m", "zkabcdabcdmz", 1, "kabcdabcdm");}
 	
 	@Test public void t26() {check("(ab|c*d)*", "zzzababcdccdabccccd", 3, "ababcdccdabccccd");}
 	//	Write also your own unit tests here
@@ -70,5 +81,14 @@ public class RegexMatcherSetBasedTest{
 	@Test public void b02() {check("(ab)?",    "aaabcde",  2,"ab"   );}
 	@Test public void b03() {check("(ab)+",    "cqaababrq",3,"abab" );}
 	@Test public void b04() {check("((ab)?)*", "deabab",   2,"abab" );}
-	@Test public void b05() {check("((ab)+)b)","deababb",  2,"ababb");}
+	@Test public void b05() {check("((ab)+)b","deababb",   2,"ababb");}
+	@Test public void b06() {check("((a*)*)b","deababb",   2,"ab"   );}
+	@Test public void b07() {check("((ab)+cb","dabeabcbab",4,"abcb" );}
+	@Test public void b08() {check("((ab)+)b","bdabeabbc", 5,"abb"  );}
+	
+	// Pathfinder kill
+	//@Test public void k02() {check("(((((bAA|cAA)|dAA)|eAA)|AAA)|(((((((f|bAA)|cAA)|dAA)|eAA)|AAA)*)aAA))", "aAbAcAdAeAqAAfaAA", 13, "faAA");}		
+	
+	@Test public void k02() {check("((((((((bAA|cAA)|dAA)|eAA)|(AAA)+)|(((((((f|bAA)|cAA)|dAA)|eAA)|AAA)*)aAA))*)*)*)", "aAbAcaAeAdAaAeAaAbAcaAeAdAaAeAqwmAdAeAqAAfaAA", 41, "faAA");}	
+
 }
