@@ -54,7 +54,6 @@ public class RegexMatcher{
 	 * @return true if testText matches with entoron otherwise false
 	 */
 	private static RegexMatchResult simulateDFS(String testText, Automaton entoron){
-		entoron.fixdat();
 		ArrayList<Pair<Integer,Integer>> stack = new ArrayList<Pair<Integer,Integer>>();
 		Pair<Integer,Integer> cur = new Pair<Integer,Integer>(0,0);
 		Pair<Integer,Integer> valid = new Pair<Integer,Integer>(-1,-1);
