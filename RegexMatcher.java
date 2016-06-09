@@ -95,36 +95,39 @@ public class RegexMatcher{
 	 *   @param entron the Automaton that represents the given regular expression
 	 *   @return true if testText matches with entron otherwise false
 	 */
-	private static RegexMatchResult simulateBFS(String testText, Automaton entron){
+	private static RegexMatchResult simulateBFS(String testText, Automaton entoron){
 		Set<Integer> actives   = new Set<Integer>();
 		Set<Integer> actives2  = new Set<Integer>();
 		RegexMatchResult curr  = new RegexMatchResult(0, "");
 		RegexMatchResult valid = new RegexMatchResult(-1,"");
-		actives.addElement(entron.start());
-		
+		actives.addElement(entoron.start());
+
 		for(int i=0; i<testText.length(); i++){
-			entron.freeSteps(actives);
+			entoron.freeSteps(actives);
 			
-			if(actives.contains(entron.end())){ //We already found a valid string, just need to see if it's of maximum length
+			if(actives.contains(entoron.end())){ //We already found a valid string, just need to see if it's of maximum length
 				valid.setStartingPosition(curr.getStartingPosition());
 				valid.setMatchedString(curr.getMatchedString());
 			}
 
 			for(int j=0; j<actives.size(); j++) //"expensive" connect
-				for(int k=0; k<entron.getSize(); k++)
-					if( entron.getEdge(actives.getElement(j),k)==testText.charAt(i) ) 
+				for(int k=0; k<entoron.getSize(); k++)
+					if( entoron.getEdge(actives.getElement(j),k)==testText.charAt(i) ) 
 						actives2.addElement(k);
-
 			if(actives2.size()==0){ //Cannot go further with the current string. Return or scrap?
 				if(valid.getStartingPosition()!=-1 && valid.getMatchedString()!="") //We already found something valid, so it's of maximum length. Return it.
 					return valid;
-				else if(entron.startsright(testText.charAt(i))){
+				else if(entoron.startsright(testText.charAt(i))!=-1){
 					curr.setStartingPosition(i);
 					curr.setMatchedString("" + testText.charAt(i));
+					actives.clear();
+					actives.addElement(entoron.startsright(testText.charAt(i)));
 				}
 				else{ //We haven't found anything valid. Scrap.
 					curr.setStartingPosition(i+1);
 					curr.setMatchedString("");
+					actives.clear();
+					actives.addElement(entoron.start());
 				}
 			} else{
 				curr.setMatchedString(curr.getMatchedString() + testText.charAt(i));
@@ -132,11 +135,9 @@ public class RegexMatcher{
 			}
 			actives2.clear();
 		}
-		entron.freeSteps(actives);
-
-		if(!actives.contains(entron.end())) //The last string was not valid, so we haven't found anything
+		entoron.freeSteps(actives);
+		if(!actives.contains(entoron.end())) //The last string was not valid, so we haven't found anything
 			return valid;
 		return curr;
 	}
-
 }

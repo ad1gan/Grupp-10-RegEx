@@ -133,20 +133,19 @@ public class Automaton{
 					actives.addElement(j);
 	}
 	
-	/**
-	 * Checks whether you can the BFS with that character
+	/** Checks whether you can the BFS with that character
 	 * @param c The character you want to start with
-	 * @return Describes whether you can start with
+	 * @return The Node you end up with that character, -1 if you cannot
 	 */
-	public boolean startsright(char c){
+	public int startsright(char c){
 		Set<Integer> s = new Set<Integer>();
 		s.addElement(start());
 		freeSteps(s);
 		for(int i=0; i<s.size(); i++)
 			for(int j=0;j<getSize();j++)
 				if(getEdge(s.getElement(i),j)==c)
-					return true;
-		return false;
+					return j;
+		return -1;
 	}
 	
 	/**
